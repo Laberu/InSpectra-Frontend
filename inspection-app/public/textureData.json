@@ -1,0 +1,10 @@
+{
+    "setA": [
+        { "name": "DAM.1001", "url": "/textures/Dam_Phrae/setA/DAM.1001.jpg" },
+        { "name": "DAM.1002", "url": "/textures/Dam_Phrae/setA/DAM.1002.jpg" }
+    ],
+    "setB": [
+        { "name": "DAM.1001", "url": "/textures/Dam_Phrae/setB/DAM.1001.jpg" },
+        { "name": "DAM.1002", "url": "/textures/Dam_Phrae/setB/DAM.1002.jpg" }
+    ]
+}
