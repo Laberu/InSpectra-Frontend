@@ -1,81 +1,156 @@
-/* Global page styles */
+/* General styles */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #8b0000, #b22222);
-    color: #333;
-  }
-  
-  .login-page,
-  .register-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  /* Form container styles */
-  .form-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-  }
-  
-  /* Form styles */
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .form-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: border-color 0.2s ease;
-  }
-  
-  .form-input:focus {
-    border-color: #b22222;
-    outline: none;
-  }
-  
-  /* Button styles */
-  .form-button {
-    background: #b22222;
-    color: white;
-    padding: 0.75rem;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .form-button:hover {
-    background: #8b0000;
-  }
-  
-  /* Link styles */
-  .link {
-    color: #b22222;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .link:hover {
-    text-decoration: underline;
-  }
-  
-  /* Error message styles */
-  .error-message {
-    color: red;
-    font-size: 0.9rem;
-  }
-  
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Container for the login sections */
+.login-container {
+  display: flex;
+  width: 800px;
+  height: 450px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background: white;
+  overflow: hidden;
+}
+
+/* Left section: Form */
+.login-form {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+}
+
+.login-form h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.form-input {
+  width: 100%; /* Fill the parent container */
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+
+.signin-button {
+  background: #b22222;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.signin-button:hover {
+  background: #8b0000;
+}
+
+/* Social login buttons */
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.google-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white; /* White background like Google buttons */
+  color: #757575; /* Default text color for Google buttons */
+  border: 1px solid #ddd; /* Light border */
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500; /* Slightly bold font */
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.google-button:hover {
+  background: #f7f7f7; /* Slight hover effect */
+  border-color: #ccc;
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+/* Right section: Welcome message */
+.login-welcome {
+  flex: 1;
+  background: linear-gradient(to bottom right, #b22222, #8b0000);
+  color: white;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.login-welcome h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.login-welcome p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.signup-link {
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 0.75rem;
+  border: 1px solid white;
+  border-radius: 4px;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.signup-link:hover {
+  background: white;
+  color: #00c853;
+}

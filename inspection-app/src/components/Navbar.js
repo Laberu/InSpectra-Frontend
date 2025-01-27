@@ -1,93 +1,45 @@
-// src/components/Navbar.js
 "use client";
 
-import { useRouter } from 'next/navigation';
+import Link from "next/link";
+import "./navbar.css";
 
 export default function Navbar() {
-  const router = useRouter();
-
   return (
-    <nav style={styles.navbarContainer}>
-      <div style={styles.navbar}>
-        <ul style={styles.navItems}>
-          <li style={styles.navItem}>Product</li>
-          <li style={styles.navItem}>Technology</li>
-          <li style={styles.navItem}>Service</li>
-          <li style={styles.navItem}>Information</li>
-          <li style={styles.navItem}>Contact</li>
+    <nav className="navbar">
+      <div className="navbar-container">
+        {/* Logo */}
+        <div className="navbar-logo">
+          <Link href="/">
+            <img src="/logo.png" alt="InSpectra Logo" className="logo-image" />
+          </Link>
+        </div>
+
+        {/* Navigation Links */}
+        <ul className="navbar-links">
+          <li>
+            <Link href="/">Home</Link>
+          </li>
+          <li>
+            <Link href="/partners">Partners</Link>
+          </li>
+          <li>
+            <Link href="/features">Features</Link>
+          </li>
+          <li>
+            <Link href="/use-case">Use Case</Link>
+          </li>
+          <li>
+            <Link href="/contact">Contact Us</Link>
+          </li>
         </ul>
-        <div style={styles.buttonGroup}>
-          <button style={styles.loginButton} onClick={() => router.push('/login')}>
-            Login
-          </button>
-          <button style={styles.getStartedButton} onClick={() => router.push('/register')}>
-            Get Started
-          </button>
+
+        {/* Demo Button */}
+        <div className="navbar-cta">
+          <Link href="/demo" className="navbar-demo-btn">
+            Demo
+          </Link>
         </div>
       </div>
     </nav>
   );
 }
-
-const styles = {
-  navbarContainer: {
-    position: 'fixed',
-    top: 0,
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    paddingTop: '20px',
-    zIndex: 1000, // Keeps it above other elements
-  },
-  navbar: {
-    width: '1400px',
-    maxWidth: '100%',
-    backgroundColor: '#1C1C1E', // Dark background color
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '10px 30px',
-    borderRadius: '57px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  },
-  navItems: {
-    display: 'flex',
-    gap: '44px', // Set space between nav items to 44px
-    listStyleType: 'none',
-    padding: 0,
-    margin: 0,
-  },
-  navItem: {
-    color: 'white',
-    fontSize: '24px',
-    fontWeight: '600',
-    fontFamily: "'Inter', sans-serif", // Apply Inter font
-    cursor: 'pointer',
-  },
-  buttonGroup: {
-    display: 'flex',
-    gap: '10px',
-  },
-  loginButton: {
-    backgroundColor: '#2C2C2E', // Dark button color for Login
-    color: 'white',
-    border: 'none',
-    padding: '8px 16px',
-    borderRadius: '20px',
-    fontSize: '16px', // Set font size to 16px for Login
-    fontWeight: '600',
-    fontFamily: "'Inter', sans-serif", // Apply Inter font
-    cursor: 'pointer',
-  },
-  getStartedButton: {
-    backgroundColor: '#E63946', // Red button color for Get Started
-    color: 'white',
-    border: 'none',
-    padding: '8px 16px',
-    borderRadius: '20px',
-    fontSize: '16px', // Set font size to 16px for Get Started
-    fontWeight: '600',
-    fontFamily: "'Inter', sans-serif", // Apply Inter font
-    cursor: 'pointer',
-  },
-};
