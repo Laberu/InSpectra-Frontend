@@ -9,28 +9,25 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { gsap } from 'gsap';
 import './Viewer.css'; // Import the new CSS
 
-const Viewer = ({ modelUrl, textureSets, modelInfos}) => {
+const Viewer = ({ modelUrl, textureSets, modelInfos }) => {
   const mountRef = useRef(null);
   const rendererRef = useRef(null);
   const controlsRef = useRef(null);
   const modelRef = useRef(null);
-  const ambientLightRef = useRef(null); // Reference for ambient light
-  const [loading, setLoading] = useState(true);
-  const [backgroundColor, setBackgroundColor] = useState("#d3d3d3");
-  const [lightIntensity, setLightIntensity] = useState(1);
-  const [selectedTextureSet, setSelectedTextureSet] = useState("setA");
+  const ambientLightRef = useRef(null);
   const cameraRef = useRef(null);
+
+  // States
+  const [loading, setLoading] = useState(true);
+  const [backgroundColor, setBackgroundColor] = useState('#d3d3d3');
+  const [lightIntensity, setLightIntensity] = useState(1);
+  const [selectedTextureSet, setSelectedTextureSet] = useState('setA');
   const [selectedPosition, setSelectedPosition] = useState(null);
 
+  // Model/camera info
+  const { positions = [], modelInfo = {} } = modelInfos || {};
 
-  const initialCameraPosition = { position: [50, 50, 100], target: [0, 0, 0] };
-
-  const { positions, modelInfo } = modelInfos || {
-    positions: [],
-    modelInfo: { name: '', vertices: 0, faces: 0 },
-  };
-
-
+  // Tool sections expansion
   const [expandedSections, setExpandedSections] = useState({
     general: false,
     lighting: false,
@@ -38,6 +35,13 @@ const Viewer = ({ modelUrl, textureSets, modelInfos}) => {
     camera: false,
   });
 
+  // Initial camera
+  const initialCameraPosition = {
+    position: [50, 50, 100],//TODO: Change the initial camera position to api data
+    target: [0, 0, 0],
+  };
+
+  // Toggle expansions
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -45,11 +49,13 @@ const Viewer = ({ modelUrl, textureSets, modelInfos}) => {
     }));
   };
 
-
+  // Apply textures
   const applyTextureSet = (model, textures, loader) => {
     model.traverse((child) => {
       if (child.isMesh && child.material) {
-        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        const materials = Array.isArray(child.material)
+          ? child.material
+          : [child.material];
         materials.forEach((material) => {
           const textureFile = textures[material.name];
           if (textureFile) {
@@ -63,61 +69,65 @@ const Viewer = ({ modelUrl, textureSets, modelInfos}) => {
     });
   };
 
-  
+  // Move camera with gsap
   const moveCameraToPosition = (index) => {
     const selected = positions[index];
-    if (!selected || !cameraRef.current || !controlsRef.current) {
-      console.warn('⚠️ Invalid position or camera is not ready');
-      return;
-    }
-  
+    if (!selected || !cameraRef.current || !controlsRef.current) return;
+
     const { position, rotationTarget } = selected;
-  
     gsap.to(cameraRef.current.position, {
       x: position.x,
       y: position.y,
       z: position.z,
       duration: 1.5,
-      ease: "power2.inOut",
+      ease: 'power2.inOut',
       onUpdate: () => {
         cameraRef.current.lookAt(rotationTarget.x, rotationTarget.y, rotationTarget.z);
       },
       onComplete: () => {
         controlsRef.current.target.set(rotationTarget.x, rotationTarget.y, rotationTarget.z);
         controlsRef.current.update();
-  
-        // Set selected position details
         setSelectedPosition(selected);
       },
     });
   };
-  
 
-
+  // Init scene
   useEffect(() => {
-    // Set up scene, camera, and renderer
+    if (!mountRef.current) return;
+
+    // Scene
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, mountRef.current.clientWidth / mountRef.current.clientHeight, 0.1, 10000);
+
+    // Camera
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      mountRef.current.clientWidth / mountRef.current.clientHeight,
+      0.1,
+      10000
+    );
     camera.position.set(...initialCameraPosition.position);
     cameraRef.current = camera;
-    
+
+    // Renderer
     let renderer = rendererRef.current;
     if (!renderer) {
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.autoClear = true; // Ensures each frame clears the previous frame
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.shadowMap.enabled = false; 
+      renderer.autoClear = true;
       rendererRef.current = renderer;
     }
     mountRef.current.appendChild(renderer.domElement);
     renderer.setClearColor(backgroundColor);
 
-    // Add ambient light and store its reference
+    // Ambient Light
     const ambientLight = new THREE.AmbientLight(0xffffff, lightIntensity);
-    ambientLightRef.current = ambientLight; // Store reference
+    ambientLightRef.current = ambientLight;
     scene.add(ambientLight);
 
-    // Set up controls
+    // Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
@@ -126,33 +136,35 @@ const Viewer = ({ modelUrl, textureSets, modelInfos}) => {
     controls.target.set(...initialCameraPosition.target);
     controls.update();
 
-    // Load the model and apply texture set
+    // Load Model
     const loadModel = () => {
-      if (modelUrl) {
-        setLoading(true);
-        const fbxLoader = new FBXLoader();
-        const textureLoader = new THREE.TextureLoader();
+      if (!modelUrl) return;
+      setLoading(true);
+      const fbxLoader = new FBXLoader();
+      const textureLoader = new THREE.TextureLoader();
 
-        fbxLoader.load(
-          modelUrl,
-          (object) => {
-            modelRef.current = object;
-            scene.add(object);
-            applyTextureSet(object, textureSets[selectedTextureSet], textureLoader);
-            setLoading(false);
-          },
-          undefined,
-          (error) => {
-            console.error("Error loading model:", error);
-            setLoading(false);
-          }
-        );
-      }
+      fbxLoader.load(
+        modelUrl,
+        (object) => {
+          modelRef.current = object;
+          scene.add(object);
+          applyTextureSet(
+            object,
+            textureSets[selectedTextureSet],
+            textureLoader
+          );
+          setLoading(false);
+        },
+        undefined,
+        (error) => {
+          console.error('Error loading model:', error);
+          setLoading(false);
+        }
+      );
     };
-
     loadModel();
 
-    // Animation loop with clear command and control updates
+    // Animation loop
     const animate = () => {
       renderer.clear();
       controls.update();
@@ -161,8 +173,9 @@ const Viewer = ({ modelUrl, textureSets, modelInfos}) => {
     };
     animate();
 
-    // Handle resizing
+    // Resize
     const handleResize = () => {
+      if (!camera || !renderer || !mountRef.current) return;
       const width = mountRef.current.clientWidth;
       const height = mountRef.current.clientHeight;
       camera.aspect = width / height;
@@ -171,76 +184,98 @@ const Viewer = ({ modelUrl, textureSets, modelInfos}) => {
     };
     window.addEventListener('resize', handleResize);
 
-    // Clean up on unmount
+    // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
       controls.dispose();
       renderer.dispose();
-      modelRef.current?.traverse((child) => {
-        if (child.isMesh) {
-          child.geometry.dispose();
-          child.material.dispose();
-          child.material.map?.dispose();
-        }
-      });
+      if (modelRef.current) {
+        modelRef.current.traverse((child) => {
+          if (child.isMesh) {
+            child.geometry.dispose();
+            if (child.material) {
+              if (Array.isArray(child.material)) {
+                child.material.forEach((mat) => {
+                  mat.map?.dispose();
+                  mat.dispose();
+                });
+              } else {
+                child.material.map?.dispose();
+                child.material.dispose();
+              }
+            }
+          }
+        });
+      }
       scene.clear();
     };
   }, [modelUrl]);
 
-  // Update light intensity based on `lightIntensity` state
+  // Light intensity changes
   useEffect(() => {
     if (ambientLightRef.current) {
       ambientLightRef.current.intensity = lightIntensity;
     }
   }, [lightIntensity]);
 
-  // Update background color based on `backgroundColor` state
+  // Background color changes
   useEffect(() => {
     if (rendererRef.current) {
       rendererRef.current.setClearColor(backgroundColor);
     }
   }, [backgroundColor]);
 
-  // Reapply textures on texture set change
+  // TextureSet changes
   useEffect(() => {
     if (modelRef.current) {
       const textureLoader = new THREE.TextureLoader();
-      applyTextureSet(modelRef.current, textureSets[selectedTextureSet], textureLoader);
+      applyTextureSet(
+        modelRef.current,
+        textureSets[selectedTextureSet],
+        textureLoader
+      );
     }
   }, [selectedTextureSet]);
 
-  const handleBackgroundColorChange = (e) => setBackgroundColor(e.target.value);
-  const handleLightIntensityChange = (e) => setLightIntensity(parseFloat(e.target.value));
-  const handleTextureSetChange = (e) => setSelectedTextureSet(e.target.value);
-
-  const resetCamera = () => {
-    if (cameraRef.current && controlsRef.current) {
-      gsap.to(cameraRef.current.position, {
-        x: initialCameraPosition.position[0],
-        y: initialCameraPosition.position[1],
-        z: initialCameraPosition.position[2],
-        duration: 1.5,
-        ease: "power2.inOut",
-        onUpdate: () => {
-          cameraRef.current.lookAt(
-            initialCameraPosition.target[0],
-            initialCameraPosition.target[1],
-            initialCameraPosition.target[2]
-          );
-        },
-        onComplete: () => {
-          controlsRef.current.target.set(
-            initialCameraPosition.target[0],
-            initialCameraPosition.target[1],
-            initialCameraPosition.target[2]
-          );
-          controlsRef.current.update();
-        },
-      });
-    }
+  // Handlers
+  const handleBackgroundColorChange = (e) => {
+    setBackgroundColor(e.target.value);
+  };
+  const handleLightIntensityChange = (e) => {
+    setLightIntensity(parseFloat(e.target.value));
+  };
+  const handleTextureSetChange = (e) => {
+    setSelectedTextureSet(e.target.value);
   };
 
-  const closeInfoPanel = () => setSelectedPosition(null);
+  // Reset camera
+  const resetCamera = () => {
+    if (!cameraRef.current || !controlsRef.current) return;
+    gsap.to(cameraRef.current.position, {
+      x: initialCameraPosition.position[0],
+      y: initialCameraPosition.position[1],
+      z: initialCameraPosition.position[2],
+      duration: 1.5,
+      ease: 'power2.inOut',
+      onUpdate: () => {
+        cameraRef.current.lookAt(
+          initialCameraPosition.target[0],
+          initialCameraPosition.target[1],
+          initialCameraPosition.target[2]
+        );
+      },
+      onComplete: () => {
+        controlsRef.current.target.set(
+          ...initialCameraPosition.target
+        );
+        controlsRef.current.update();
+      },
+    });
+  };
+
+  const closeInfoPanel = () => {
+    setSelectedPosition(null);
+  };
 
   return (
     <div className="viewer-container">

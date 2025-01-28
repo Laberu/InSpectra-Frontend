@@ -3,15 +3,40 @@
 import { useState } from "react";
 import Link from "next/link";
 import "./login.css"; // Import the CSS file for styling
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Email:", email, "Password:", password);
-    alert("Login successful!");
+    setError(null);
+
+    try {
+      const response = await fetch("http://localhost:3001/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const msg = await response.text();
+        setError(msg || "Login failed");
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Login success", data);
+      router.push('/');
+    } catch (err) {
+      console.error("Error logging in", err);
+      setError("An error occurred while logging in.");
+    }
   };
 
   const handleSocialLogin = (platform) => {
@@ -40,23 +65,29 @@ export default function Login() {
             className="form-input"
             required
           />
-        </form>
-        <button type="submit" className="signin-button">
+          <Link href="/forgot-password" className="forgot-password-link">
+            Forgot Password?
+          </Link>
+          <button type="submit" className="signin-button">
             Signin
           </button>
+        </form>
+
+        {error && <p className="error-message">{error}</p>}
+
         <p>or signin with</p>
         <div className="social-buttons">
           <button
-              className="google-button"
-              aria-label="Sign in with Google"
-              onClick={() => alert("Google Sign-In Clicked!")}
-            >
-              <img
-                src="https://developers.google.com/identity/images/g-logo.png"
-                alt="Google Logo"
-                className="google-icon"
-              />
-              Sign in with Google
+            className="google-button"
+            aria-label="Sign in with Google"
+            onClick={() => handleSocialLogin("Google")}
+          >
+            <img
+              src="https://developers.google.com/identity/images/g-logo.png"
+              alt="Google Logo"
+              className="google-icon"
+            />
+            Sign in with Google
           </button>
         </div>
       </div>

@@ -32,13 +32,29 @@ export default function Register() {
     });
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Passwords do not match.");
-      return;
+
+    try {
+      const res = await fetch("http://localhost:3001/auth/signup", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      
+
+      if (!res.ok) {
+        // If server responds with an error, display it
+        setError(data.error || 'Sign up failed.');
+      } else {
+        // If sign up succeeds, redirect (or handle success)
+        router.push('/login');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
     }
-    alert("Registration successful!");
   };
 
   const handleAcknowledgeTerms = () => {

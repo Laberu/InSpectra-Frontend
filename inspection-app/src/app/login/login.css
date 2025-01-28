@@ -62,6 +62,7 @@ body {
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s ease;
+  text-decoration: none;
 }
 
 .signin-button:hover {
@@ -153,4 +154,19 @@ body {
 .signup-link:hover {
   background: white;
   color: #00c853;
+}
+
+.forgot-password-link {
+  display: block;
+  margin-bottom: 15px; /* Add space before the submit button */
+  font-size: 0.75rem;
+  color: #b22222; /* Red to match CI */
+  text-decoration: none;
+  text-align: left; /* Align to the left */
+  width: 100%; /* Ensure it takes full width */
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+  color: #8b0000; /* Slightly darker red on hover */
 }

@@ -4,6 +4,7 @@ export async function fetchInfos(modelId) {
   const modelInfos = {
     Dam_Phrae: {
       positions: [
+        //{ name: 'Position 0, position: { x: 50, y: 50, z: 100 }, rotationTarget: { x: 0, y: 0, z: 0 } }, set init camera position all model
         { name: 'Position 1', position: { x: 50, y: 50, z: 100 }, rotationTarget: { x: 0, y: 0, z: 0 } },
         { name: 'Position 2', position: { x: 0, y: 30, z: 50 }, rotationTarget: { x: 10, y: 10, z: 10 } },
       ],
