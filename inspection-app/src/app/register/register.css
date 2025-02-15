@@ -1,0 +1,311 @@
+/* General styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Container for the register sections */
+.register-container {
+  display: flex;
+  width: 800px;
+  height: 500px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background: white;
+  overflow: hidden;
+}
+
+/* Left section: Form */
+.register-form {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+}
+
+.register-form h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* Ensures all children (inputs, buttons) stretch to the same width */
+  width: 100%;
+  padding: 0; /* Remove unnecessary padding */
+}
+
+
+.form-input {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Ensures padding and border are included in width */
+}
+
+.signup-button {
+  background: #b22222;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.signup-button:hover {
+  background: #8b0000;
+}
+
+.signup-button:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+}
+
+/* Password policy */
+.password-policy {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.password-policy li {
+  margin-bottom: 0.3rem;
+}
+
+.password-policy .valid {
+  color: #4caf50;
+}
+
+/* Agree to terms */
+.terms-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.terms-container a {
+  color: #b22222;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.terms-container a:hover {
+  text-decoration: underline;
+}
+
+/* Right section: Welcome message */
+.register-welcome {
+  flex: 1;
+  background: linear-gradient(to bottom right, #b22222, #8b0000);
+  color: white;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.register-welcome h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.register-welcome p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.signin-link {
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 0.75rem;
+  border: 1px solid white;
+  border-radius: 4px;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.signin-link:hover {
+  background: white;
+  color: #b22222;
+}
+.google-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white; /* White background like Google buttons */
+  color: #757575; /* Default text color for Google buttons */
+  border: 1px solid #ddd; /* Light border */
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500; /* Slightly bold font */
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.google-button:hover {
+  background: #f7f7f7; /* Slight hover effect */
+  border-color: #ccc;
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+/* Password Field Container */
+.password-field {
+  position: relative;
+  width: 100%; /* Ensure it spans the full width of the parent */
+  box-sizing: border-box; /* Ensures padding and border are included in width */
+
+}
+
+/* Input Field */
+.password-field .form-input {
+  width: 100%; /* Ensure the input takes up the full width of the container */
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box; /* Ensures padding and border are included in width */
+}
+
+/* Focus-within Style for the Parent */
+.password-field:focus-within {
+  border-color: #b22222;
+}
+
+/* Password Rules Overlay */
+.password-rules-overlay {
+  position: absolute;
+  top: calc(100% + 4px); /* Slight spacing below the input field */
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+  width: 100%; /* Matches the width of the input field */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+/* Password Rules Styling */
+.password-rules-overlay ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.password-rules-overlay li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.password-rules-overlay .valid {
+  color: #4caf50; /* Green for valid */
+}
+
+.password-rules-overlay .invalid {
+  color: #f44336; /* Red for invalid */
+}
+
+
+
+/* Password Input Focus */
+.form-input:focus {
+  border-color: #b22222;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+/* Password Input Focus */
+.password-field:focus {
+  border-color: #b22222;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Make sure it's above other elements */
+}
+
+/* Modal Content */
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h3 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.modal-content p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.acknowledge-button {
+  background: #b22222;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.acknowledge-button:hover {
+  background: #8b0000;
+}
+
+/* Terms Link in Checkbox */
+.terms-link {
+  color: #b22222;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.terms-link:hover {
+  color: #8b0000;
+}

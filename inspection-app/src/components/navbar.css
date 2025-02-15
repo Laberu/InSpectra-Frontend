@@ -1,0 +1,82 @@
+/* General Navbar Styles */
+.navbar {
+    background-color: #ffffff;
+    border-bottom: 2px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-logo {
+    flex: 0; /* Keep the logo aligned on the left */
+  }
+  
+  .navbar-links {
+    flex: 1; /* Allow the links to take some space */
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin-left: 500px; /* Shift the links slightly to the right */
+    gap: 70px; /* Space between links */
+  }
+  
+  .navbar-cta {
+    flex: 0; /* Keep the Demo button aligned to the right */
+  }
+  
+  
+  /* Logo Styles */
+  .navbar-logo .logo-image {
+    height: 40px; /* Adjust size as needed */
+    width: auto;
+  }
+  
+  
+  .navbar-links li {
+    font-size: 1rem;
+  }
+  
+  .navbar-links a {
+    text-decoration: none;
+    color: #b22222; /* CI red color */
+    font-weight: 600;
+    transition: color 0.3s;
+    font-size:16px
+  }
+  
+  .navbar-links a:hover {
+    color: #8b0000; /* Slightly darker red on hover */
+  }
+  
+  /* Demo Button Styles */
+  .navbar-cta .navbar-demo-btn {
+    background-color: #8b0000;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    font-family: "Inter", sans-serif;
+  }
+  
+  .navbar-cta .navbar-demo-btn:hover {
+    background-color: #b22222;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Apply Inter Font Globally */
+  body {
+    font-family: "Inter", Arial, sans-serif;
+  }
+  

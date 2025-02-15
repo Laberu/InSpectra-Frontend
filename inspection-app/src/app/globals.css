@@ -1,0 +1,54 @@
+/* Full CSS reset */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Root colors for light and dark mode */
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* Reset all padding, margin, and box sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Full-page layout for the HTML and body elements */
+html, body, #__next {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+/* Ensure the container is centered and has no padding */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Full-page layout for Next.js wrapper */
+#__next {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Debug outline for each element to check for spacing issues */
+html, body, #__next, .full-screen-wrapper {
+  outline: 1px solid red;
+}
