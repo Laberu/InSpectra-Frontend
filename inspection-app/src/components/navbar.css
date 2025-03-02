@@ -1,82 +1,159 @@
-/* General Navbar Styles */
-.navbar {
-    background-color: #ffffff;
-    border-bottom: 2px solid #ddd;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .navbar-container {
-    max-width: 1500px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .navbar-logo {
-    flex: 0; /* Keep the logo aligned on the left */
-  }
-  
-  .navbar-links {
-    flex: 1; /* Allow the links to take some space */
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    margin-left: 500px; /* Shift the links slightly to the right */
-    gap: 70px; /* Space between links */
-  }
-  
+/*******************************************
+ * Base Navbar Styles (Desktop)
+ *******************************************/
+ .navbar {
+  background-color: #fff;
+  border-bottom: 2px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 20px; /* Adjust horizontal padding as needed */
+}
+
+/* Logo/Brand */
+.navbar-logo {
+  margin-right: auto;
+}
+
+.logo-image {
+  height: 40px;
+  width: auto;
+  cursor: pointer;
+}
+
+/* Desktop Navigation Links */
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 30px; /* Space between links */
+  margin-right: 20px; /* Space before CTA button */
+}
+
+.navbar-links li {
+  font-size: 1rem;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: #b22222; /* "CI red" color */
+  font-weight: 600;
+  transition: color 0.3s;
+  font-size: 16px;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.navbar-links a:hover {
+  color: #8b0000; /* Slightly darker red on hover */
+}
+
+/* Desktop CTA Button */
+.navbar-cta {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-demo-btn {
+  background-color: #8b0000;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar-demo-btn:hover {
+  background-color: #b22222;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/*******************************************
+ * Hamburger (Hidden on Desktop)
+ *******************************************/
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.navbar-hamburger .bar {
+  width: 25px;
+  height: 3px;
+  background-color: #b22222;
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+/*******************************************
+ * Mobile Menu (Hidden on Desktop)
+ *******************************************/
+.mobile-menu {
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: absolute; 
+  top: 60px; /* Just below the navbar */
+  left: 0;
+  z-index: 999;
+  padding-bottom: 10px;
+}
+
+/* Show the menu when .open is applied */
+.mobile-menu.open {
+  display: flex;
+}
+
+.mobile-nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-nav-links li {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+  color: #b22222;
+  font-family: "Inter", Arial, sans-serif;
+  cursor: pointer;
+}
+
+.mobile-nav-links li:hover {
+  background: #f4f4f4;
+}
+
+/* Mobile CTA inside the drop-down */
+.mobile-cta {
+  padding: 10px 20px;
+  text-align: center;
+}
+
+/*******************************************
+ * Mobile Breakpoint
+ *******************************************/
+@media screen and (max-width: 768px) {
+  /* Hide desktop nav links & CTA */
+  .navbar-links,
   .navbar-cta {
-    flex: 0; /* Keep the Demo button aligned to the right */
+    display: none;
   }
-  
-  
-  /* Logo Styles */
-  .navbar-logo .logo-image {
-    height: 40px; /* Adjust size as needed */
-    width: auto;
+
+  /* Show hamburger icon on mobile */
+  .navbar-hamburger {
+    display: flex;
   }
-  
-  
-  .navbar-links li {
-    font-size: 1rem;
-  }
-  
-  .navbar-links a {
-    text-decoration: none;
-    color: #b22222; /* CI red color */
-    font-weight: 600;
-    transition: color 0.3s;
-    font-size:16px
-  }
-  
-  .navbar-links a:hover {
-    color: #8b0000; /* Slightly darker red on hover */
-  }
-  
-  /* Demo Button Styles */
-  .navbar-cta .navbar-demo-btn {
-    background-color: #8b0000;
-    color: white;
-    padding: 8px 20px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 600;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-    font-family: "Inter", sans-serif;
-  }
-  
-  .navbar-cta .navbar-demo-btn:hover {
-    background-color: #b22222;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Apply Inter Font Globally */
-  body {
-    font-family: "Inter", Arial, sans-serif;
-  }
-  
+}

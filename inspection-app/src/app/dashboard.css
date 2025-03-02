@@ -1,0 +1,277 @@
+/*******************************************
+ * Hero Section Styles
+ *******************************************/
+ .hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  background: #141414; /* Or use a gradient/clip-path for an angled look */
+  padding: 40px 20px;
+  min-height: 60vh;
+  margin-top: 0; /* Ensures it sits right below the navbar */
+}
+
+.hero-content {
+  width: 50%;
+  padding-right: 20px;
+}
+
+.hero-content h1 {
+  font-size: 2rem;
+  color: #b22222;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+.hero-cta {
+  background-color: #b22222;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.hero-cta:hover {
+  background-color: #8b0000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hero-image-container {
+  width: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-image {
+  max-width: 100%;
+  border-radius: 8px;
+  object-fit: contain; /* or "cover" if you prefer */
+}
+
+/* Optional overlay showing defect info */
+.defect-box {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.defect-box h3 {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.defect-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.defect-box li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+/* Responsive for hero section */
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    padding: 20px;
+  }
+  .hero-content, .hero-image-container {
+    width: 100%;
+  }
+  .hero-image-container {
+    margin-top: 20px;
+  }
+}
+
+/*******************************************
+ * Existing Dashboard & Welcome Styles
+ *******************************************/
+
+/* General Styles */
+body {
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  background: #f4f4f4;
+  color: #333;
+}
+
+/* Unauthenticated Welcome Container */
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  text-align: center;
+  background: linear-gradient(to right, #8b0000, #b22222);
+  color: white;
+  padding: 20px;
+  margin: 40px 0; /* Some spacing below the hero */
+}
+
+.welcome-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-container p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.demo-button {
+  background: white;
+  color: #b22222;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.demo-button:hover {
+  background: #f4f4f4;
+}
+
+/* Authenticated Dashboard Container */
+.dashboard-container {
+  padding: 40px;
+}
+
+/* User Info Section */
+.user-info {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.user-info h2 {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+  color: #b22222;
+}
+
+.user-info p {
+  margin: 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Dashboard Actions */
+.dashboard-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.logout-button {
+  background: #b22222;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 1rem;
+}
+
+.logout-button:hover {
+  background: #8b0000;
+}
+
+.new-project-button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.new-project-button:hover {
+  background: #388E3C;
+}
+
+/* Model Section */
+.models-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.models-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.model-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.model-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.model-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
+}
+
+.model-name {
+  font-size: 1.2rem;
+  margin: 10px;
+  color: #333;
+  text-align: center;
+}
+
+/* Placeholder for missing images */
+.model-placeholder {
+  width: 100%;
+  height: 150px;
+  background: #e0e0e0;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: #aaa;
+  text-transform: uppercase;
+}
+
+.model-placeholder::before {
+  content: "No Image";
+}

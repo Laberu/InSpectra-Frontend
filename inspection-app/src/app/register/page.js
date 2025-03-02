@@ -2,16 +2,19 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import "./register.css"; // Import the CSS file for styling
+import { useRouter } from "next/navigation"; // Import the router
+import "./register.css"; // Import your CSS
 
 export default function Register() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [showPasswordRules, setShowPasswordRules] = useState(false);
-  const [showTermsModal, setShowTermsModal] = useState(false); // To handle modal visibility
-  const [termsAcknowledged, setTermsAcknowledged] = useState(false); // To check if terms are acknowledged
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [termsAcknowledged, setTermsAcknowledged] = useState(false);
+  const [error, setError] = useState(""); // Error state
 
   // Password validation state
   const [passwordValidation, setPasswordValidation] = useState({
@@ -35,25 +38,31 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     try {
-      const res = await fetch("http://localhost:3001/auth/signup", {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch('http://localhost:3001/auth/signup', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
-      
 
       if (!res.ok) {
-        // If server responds with an error, display it
-        setError(data.error || 'Sign up failed.');
+        // If the server responds with an error, display it
+        setError(data.error || "Sign up failed.");
       } else {
-        // If sign up succeeds, redirect (or handle success)
-        router.push('/login');
+        // On successful signup, redirect to the login page
+        router.push("/login");
       }
     } catch (err) {
-      setError('Network error. Please try again.');
+      console.error("Signup error:", err);
+      setError("Network error. Please try again.");
     }
   };
 
@@ -67,12 +76,19 @@ export default function Register() {
       {/* Left section: Registration form */}
       <div className="register-form">
         <h2>Signup</h2>
+
+        {/* Display error message if any */}
+        {error && <p className="error-message">{error}</p>}
+
         <form onSubmit={handleRegister} className="form-container">
           <input
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError(""); // Clear error when user types
+            }}
             className="form-input"
             required
           />
@@ -84,7 +100,10 @@ export default function Register() {
               value={password}
               onFocus={() => setShowPasswordRules(true)}
               onBlur={() => setShowPasswordRules(false)}
-              onChange={(e) => validatePassword(e.target.value)}
+              onChange={(e) => {
+                validatePassword(e.target.value);
+                setError("");
+              }}
               className="form-input"
               required
             />
@@ -112,7 +131,10 @@ export default function Register() {
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setError("");
+            }}
             className="form-input"
             required
           />
@@ -153,6 +175,7 @@ export default function Register() {
             Signup
           </button>
         </form>
+
         <p>or signup with</p>
         <div className="social-buttons">
           <button
@@ -177,12 +200,9 @@ export default function Register() {
             <h3>Terms and Conditions</h3>
             <p>
               Please read and accept the terms and conditions before continuing.
-              (You can replace this text with your actual terms and conditions.)
+              (Replace this text with your actual terms and conditions.)
             </p>
-            <button
-              className="acknowledge-button"
-              onClick={handleAcknowledgeTerms} // Acknowledge terms
-            >
+            <button className="acknowledge-button" onClick={handleAcknowledgeTerms}>
               I Accept
             </button>
           </div>
@@ -193,11 +213,11 @@ export default function Register() {
       <div className="register-welcome">
         <h2>Join Us!</h2>
         <p>
-          Create an account to get started. Enjoy exclusive features and connect
-          with our amazing community.
+          Create an account to get started. Enjoy exclusive features and connect with
+          our amazing community.
         </p>
         <Link href="/login" className="signin-link">
-          Already have an account? Signin.
+          Already have an account? Sign in.
         </Link>
       </div>
     </div>

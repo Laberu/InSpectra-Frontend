@@ -1,62 +1,50 @@
 // src/context/AuthContext.js
 "use client";
 
-import { createContext, useContext, useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
+  const [accesstoken, setAccessToken] = useState(null);
 
   useEffect(() => {
-    // Check for token on load to persist the session
-    const checkAuth = async () => {
+    const storedToken = localStorage.getItem("accesstoken");
+    const storedUser = localStorage.getItem("user");
+
+    if (storedToken && storedToken !== "undefined") {
+      setAccessToken(storedToken);
+    }
+    if (storedUser && storedUser !== "undefined") {
       try {
-        const res = await fetch('/api/me', { method: 'GET', credentials: 'include' });
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data);
-        }
-      } catch {
-        setUser(null);
-      } finally {
-        setLoading(false);
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error("Error parsing stored user data:", error);
+        localStorage.removeItem("user");
       }
-    };
-    checkAuth();
+    }
   }, []);
 
-  const login = async (email, password) => {
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      setUser({ email });
-      router.push('/');
-    } else {
-      alert("Invalid login credentials");
-    }
+  const login = (userData, token) => {
+    setUser(userData);
+    setAccessToken(token);
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("accesstoken", token);
   };
 
   const logout = () => {
-    document.cookie = 'token=; Max-Age=0'; // Clear the cookie
     setUser(null);
-    router.push('/login');
+    setAccessToken(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("accesstoken");
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, setUser }}>
+    <AuthContext.Provider value={{ user, accesstoken, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
 export const useAuth = () => useContext(AuthContext);

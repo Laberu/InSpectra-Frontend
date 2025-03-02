@@ -1,12 +1,15 @@
+// src/app/login/page.js
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import "./login.css"; // Import the CSS file for styling
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { useAuth } from "../../context/AuthContext"; // Adjust the path as needed
 
 export default function Login() {
   const router = useRouter();
+  const { login } = useAuth(); // Get the login function from your AuthContext
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -32,6 +35,17 @@ export default function Login() {
 
       const data = await response.json();
       console.log("Login success", data);
+      
+      // Construct a user object from the response
+      const userData = {
+        id: data.userid,
+        email: data.email,
+        // You can add more fields here if needed
+      };
+
+      // Save the token and user info in your AuthContext and localStorage
+      login(userData, data.accesstoken);
+
       router.push('/');
     } catch (err) {
       console.error("Error logging in", err);
