@@ -1,0 +1,19 @@
+.searchBar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  .searchBar input {
+    width: 100%;
+    max-width: 600px;
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .searchBar input:focus {
+    border-color: #b22222;
+  }
+  
