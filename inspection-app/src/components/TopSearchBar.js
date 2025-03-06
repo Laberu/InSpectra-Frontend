@@ -1,19 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./TopSearchBar.module.css";
+import "./topsearchbar.css";
 
 export default function TopSearchBar({ onSearch }) {
   const [query, setQuery] = useState("");
 
   const handleChange = (e) => {
-    setQuery(e.target.value);
-    if (onSearch) onSearch(e.target.value);
+    const value = e.target.value;
+    setQuery(value);
+    onSearch(value);
   };
 
   return (
-    <div className={styles.searchBar}>
-      <input
+    <div className="top-search-bar">
+      <input 
         type="text"
         placeholder="Search projects..."
         value={query}

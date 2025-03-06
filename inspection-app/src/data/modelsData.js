@@ -7,7 +7,7 @@ export const modelsData = [
       "With supporting text below as a natural lead-in to additional content or references.",
     status: "Finished", // or "Ongo
     signed: true,
-    thumbnail: "/default-thumbnail.png",
+    thumbnail: "/dam.png",
   },
   {
     id: "bridge_phase_2",
