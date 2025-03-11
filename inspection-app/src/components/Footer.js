@@ -1,158 +1,101 @@
-// src/components/Footer.js
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import styles from "./Footer.module.css";
+
 export default function Footer() {
-    return (
-      <footer style={styles.footerContainer}>
-        <div style={styles.footerContent}>
-          <h2 style={styles.footerTitle}>Footer</h2>
-          <hr style={styles.divider} />
-  
-          <div style={styles.columns}>
-            <div style={styles.column}>
-              <h3 style={styles.columnTitle}>Lorem Ipsum</h3>
-              <p style={styles.columnText}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text of the printing and typesetting industry.
-              </p>
-              <h4 style={styles.subColumnTitle}>Contact</h4>
-              <ul style={styles.contactList}>
-                <li style={styles.contactItem}>Lorem Ipsum Lorem Ipsum</li>
-                <li style={styles.contactItem}>Lorem Ipsum Lorem Ipsum</li>
-                <li style={styles.contactItem}>Lorem Ipsum Lorem Ipsum</li>
-              </ul>
-            </div>
-  
-            <div style={styles.column}>
-              <h3 style={styles.columnTitle}>Lorem Ipsum</h3>
-              <ul style={styles.list}>
-                <li style={styles.listItem}>Lorem Ipsum</li>
-                <li style={styles.listItem}>Lorem Ipsum</li>
-                <li style={styles.listItem}>Lorem Ipsum</li>
-                <li style={styles.listItem}>Lorem Ipsum</li>
-              </ul>
-            </div>
-  
-            <div style={styles.column}>
-              <h3 style={styles.columnTitle}>Lorem Ipsum</h3>
-              <ul style={styles.list}>
-                <li style={styles.listItem}>Lorem Ipsum</li>
-                <li style={styles.listItem}>Lorem Ipsum</li>
-                <li style={styles.listItem}>Lorem Ipsum</li>
-                <li style={styles.listItem}>Lorem Ipsum</li>
-              </ul>
-            </div>
+  return (
+    <footer className={styles.footer}>
+      {/* Top Section: Columns */}
+      <div className={styles.topSection}>
+        
+        {/* Brand / Intro Column */}
+        <div className={styles.brandSection}>
+          {/* Logo (update path and dimensions as needed) */}
+          <div className={styles.logoContainer}>
+            <Image
+              src="/logo.png"
+              alt="InSpectra Logo"
+              width={120}
+              height={40}
+              className={styles.logo}
+            />
           </div>
-  
-          <div style={styles.bottomSection}>
-            <p style={styles.copyright}>&copy;2024 - Lorem Ipsum, Inc.</p>
-            <div style={styles.iconContainer}>
-              <div style={styles.icon}>
-                <img src="/assets/icon1.png" alt="icon1" style={styles.iconImage} />
-              </div>
-              <div style={styles.icon}>
-                <img src="/assets/icon2.png" alt="icon2" style={styles.iconImage} />
-              </div>
-              <div style={styles.icon}>
-                <img src="/assets/icon3.png" alt="icon3" style={styles.iconImage} />
-              </div>
-            </div>
+          <p className={styles.brandDesc}>
+            Leading the way in AI-powered inspections and data-driven insights.
+          </p>
+        </div>
+
+        {/* Help & Support Column */}
+        <div className={styles.linkSection}>
+          <h4>Help &amp; Support</h4>
+          <ul>
+            <li><Link href="/faq">Getting Started/FAQ</Link></li>
+            <li><Link href="/video-tour">Video Tour</Link></li>
+            <li><Link href="/commands">Dial Pad Commands</Link></li>
+            <li><Link href="/transcription">Call Transcription Center</Link></li>
+          </ul>
+        </div>
+
+        {/* Product Features Column */}
+        <div className={styles.linkSection}>
+          <h4>Product Features</h4>
+          <ul>
+            <li><Link href="/screen-sharing">Screen Sharing</Link></li>
+            <li><Link href="/video-conferencing">Video Conferencing</Link></li>
+            <li><Link href="/audio">Global Web Audio</Link></li>
+            <li><Link href="/branding">Branded Greeting</Link></li>
+            <li><Link href="/tollfree">Toll-Free Call</Link></li>
+          </ul>
+        </div>
+
+        {/* Contact Column */}
+        <div className={styles.linkSection}>
+          <h4>Contact Us</h4>
+          <p>service@inspectra.com</p>
+          <p>+1 (555) 123-4567</p>
+          <p>123 InSpectra Rd, Suite 200</p>
+          <p>El Sedangado, CA 94505, US</p>
+          
+          {/* Social Icons (example) */}
+          <div className={styles.socialIcons}>
+            <Link href="https://twitter.com">
+              <Image
+                src="/icons/twitter.svg"
+                alt="Twitter"
+                width={24}
+                height={24}
+              />
+            </Link>
+            <Link href="https://facebook.com">
+              <Image
+                src="/icons/facebook.svg"
+                alt="Facebook"
+                width={24}
+                height={24}
+              />
+            </Link>
+            <Link href="https://linkedin.com">
+              <Image
+                src="/icons/linkedin.svg"
+                alt="LinkedIn"
+                width={24}
+                height={24}
+              />
+            </Link>
           </div>
         </div>
-      </footer>
-    );
-  }
-  
-  const styles = {
-    footerContainer: {
-      backgroundColor: '#1C1C1E',
-      color: '#D1D1D1',
-      padding: '40px',
-      fontFamily: "'Inter', sans-serif",
-    },
-    footerContent: {
-      maxWidth: '1400px',
-      margin: '0 auto',
-    },
-    footerTitle: {
-      fontSize: '32px',
-      fontWeight: '600',
-      color: 'white',
-    },
-    divider: {
-      width: '100px', // Extended the line width
-      height: '4px',
-      backgroundColor: '#FFB400',
-      margin: '10px 0 20px 0',
-      border: 'none',
-    },
-    columns: {
-      display: 'flex',
-      gap: '40px',
-      flexWrap: 'wrap',
-    },
-    column: {
-      flex: '1 1 300px',
-    },
-    columnTitle: {
-      fontSize: '18px',
-      fontWeight: '600',
-      color: 'white',
-      marginBottom: '10px',
-    },
-    subColumnTitle: {
-      fontSize: '16px',
-      fontWeight: '600',
-      color: '#FFB400',
-      margin: '20px 0 10px 0',
-    },
-    columnText: {
-      fontSize: '14px',
-      lineHeight: '1.5',
-      color: '#A9A9A9',
-    },
-    list: {
-      listStyleType: 'none',
-      padding: 0,
-    },
-    listItem: {
-      fontSize: '14px',
-      color: '#A9A9A9',
-      marginBottom: '8px',
-    },
-    contactList: {
-      listStyleType: 'none',
-      padding: 0,
-      marginLeft: '20px',
-    },
-    contactItem: {
-      fontSize: '14px',
-      color: '#A9A9A9',
-      borderLeft: '2px solid #FF4C4C',
-      paddingLeft: '10px',
-      marginBottom: '8px',
-    },
-    bottomSection: {
-      marginTop: '40px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      borderTop: '1px solid #333',
-      paddingTop: '20px',
-    },
-    copyright: {
-      fontSize: '14px',
-      color: '#A9A9A9',
-    },
-    iconContainer: {
-      display: 'flex',
-      gap: '10px',
-    },
-    icon: {
-      backgroundColor: '#2C2C2E',
-      borderRadius: '8px',
-      padding: '10px',
-    },
-    iconImage: {
-      width: '24px',
-      height: '24px',
-    },
-  };
-  
+      </div>
+
+      {/* Bottom Section: Copyright */}
+      <div className={styles.bottomSection}>
+        <p>© {new Date().getFullYear()} InSpectra LTD. All rights reserved.</p>
+        <div className={styles.bottomLinks}>
+          <Link href="/terms-of-service">Terms of Service</Link>
+          <Link href="/privacy-policy">Privacy Policy</Link>
+        </div>
+      </div>
+    </footer>
+  );
+}

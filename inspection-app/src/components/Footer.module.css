@@ -1,0 +1,116 @@
+.footer {
+    background: #1b1b1b; /* Dark background */
+    color: #ccc;        /* Light text */
+    font-family: "Inter", sans-serif;
+  }
+  
+  /* Top section: the 4-column layout */
+  .topSection {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    padding: 40px 20px;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  
+  /* Brand / Intro Column */
+  .brandSection {
+    flex: 1;
+  }
+  
+  .logoContainer {
+    margin-bottom: 15px;
+  }
+  
+  .logo {
+    object-fit: contain;
+  }
+  
+  .brandDesc {
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+  
+  /* Link / Info Columns */
+  .linkSection {
+    flex: 1;
+  }
+  
+  .linkSection h4 {
+    margin-bottom: 15px;
+    color: #fff;
+    font-size: 1.1rem;
+  }
+  
+  .linkSection ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .linkSection li {
+    margin-bottom: 10px;
+  }
+  
+  .linkSection a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+  }
+  
+  .linkSection a:hover {
+    color: #b22222; /* "CI red" highlight */
+  }
+  
+  .linkSection p {
+    margin: 0 0 10px;
+    font-size: 0.95rem;
+  }
+  
+  /* Social Icons row */
+  .socialIcons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  /* Bottom section: copy and extra links */
+  .bottomSection {
+    border-top: 1px solid #333;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .bottomSection p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #888;
+  }
+  
+  .bottomLinks {
+    margin-top: 10px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .bottomLinks a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+  
+  .bottomLinks a:hover {
+    color: #b22222;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .topSection {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  

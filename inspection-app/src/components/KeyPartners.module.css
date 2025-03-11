@@ -1,0 +1,45 @@
+.keyPartnersSection {
+    background-color: #f9f9f9; /* Light gray background, optional */
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  .sectionTitle {
+    font-size: 1.8rem;
+    font-weight: 100;
+    color: #484848; /* Subtle gray text */
+    margin-bottom: 30px;
+  }
+  
+  .logosContainer {
+    display: flex;
+    flex-wrap: wrap; /* Wraps to next line on smaller screens */
+    justify-content: center;
+    gap: 40px; /* Space between logos */
+  }
+  
+  .logoWrapper {
+    /* Each partner logo wrapper */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .partnerLogo {
+    max-width: 100px;
+    height: auto;
+    object-fit: contain; /* Ensures the logo keeps aspect ratio */
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .partnerLogo:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Responsive adjustments (optional) */
+  @media (max-width: 768px) {
+    .logosContainer {
+      gap: 20px;
+    }
+  }
+  

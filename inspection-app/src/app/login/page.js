@@ -1,22 +1,27 @@
+// src/app/login/page.js
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import "./login.css"; // Import the CSS file for styling
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { useAuth } from "../../context/AuthContext"; // Adjust the path as needed
 
 export default function Login() {
   const router = useRouter();
+  const { login } = useAuth(); // Get the login function from your AuthContext
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  const AUTH_BACKEND_API_URL = process.env.NEXT_PUBLIC_AUTH_BACKEND_API_URL; // Ensure it's prefixed with NEXT_PUBLIC
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:3001/auth/signin", {
+      const response = await fetch(`${AUTH_BACKEND_API_URL}/auth/signin`, {  // Corrected syntax
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,6 +37,17 @@ export default function Login() {
 
       const data = await response.json();
       console.log("Login success", data);
+      
+      // Construct a user object from the response
+      const userData = {
+        id: data.userid,
+        email: data.email,
+        // You can add more fields here if needed
+      };
+
+      // Save the token and user info in your AuthContext and localStorage
+      login(userData, data.accesstoken);
+
       router.push('/');
     } catch (err) {
       console.error("Error logging in", err);
