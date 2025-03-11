@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { modelsData } from "../data/modelsData";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import KeyPartners from "../components/KeyPartners";
 import Footer from "../components/Footer";
 import "./dashboard.css"; // Combined styles in one file
