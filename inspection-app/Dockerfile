@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install dependencies using npm ci for consistency
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 # Copy only necessary files
 COPY public ./public
@@ -35,8 +35,8 @@ COPY --from=builder /app/node_modules ./node_modules
 # Set the environment to production
 ENV NODE_ENV=production
 
-# Expose port 3000
-EXPOSE 3000
+# Expose port 3002 instead of 3000
+EXPOSE 3002
 
-# Run the application in production mode
-CMD ["npx", "next", "start"]
+# Run Next.js on port 3002
+CMD ["npx", "next", "start", "-p", "3002"]
