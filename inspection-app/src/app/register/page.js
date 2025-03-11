@@ -16,6 +16,8 @@ export default function Register() {
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
   const [error, setError] = useState(""); // Error state
 
+  const AUTH_BACKEND_API_URL = process.env.AUTH_BACKEND_API_URL; // Use environment variable
+
   // Password validation state
   const [passwordValidation, setPasswordValidation] = useState({
     hasMinLength: false,
@@ -45,7 +47,7 @@ export default function Register() {
     }
 
     try {
-      const res = await fetch('http://localhost:3001/auth/signup', {
+      const res = await fetch(`${AUTH_BACKEND_API_URL}/auth/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

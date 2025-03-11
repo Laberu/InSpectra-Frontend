@@ -241,11 +241,6 @@
   color: #555;
   line-height: 1.4;
   margin-bottom: 15px;
-  
-  
-  /* Multiline ellipsis settings */
-  display: -webkit-box;         /* Enable flex-like layout for webkit-based clamp */      /* Number of lines you want to show */
-  -webkit-box-orient: vertical; /* Vertical orientation for line clamp */
   overflow: hidden;             /* Hide any overflowed text */
   text-overflow: ellipsis;      /* Show '...' when text is truncated */
   
@@ -354,7 +349,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 10px;
+  padding: 15px;
   padding-bottom: 16px;
   /* Align right naturally */
   transition: transform 0.3s;
@@ -390,3 +385,4 @@
   width: 80%;
   max-width: 500px;
 }
+

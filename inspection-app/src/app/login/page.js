@@ -14,12 +14,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
+  const AUTH_BACKEND_API_URL = process.env.NEXT_PUBLIC_AUTH_BACKEND_API_URL; // Ensure it's prefixed with NEXT_PUBLIC
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:3001/auth/signin", {
+      const response = await fetch(`${AUTH_BACKEND_API_URL}/auth/signin`, {  // Corrected syntax
         method: "POST",
         headers: {
           "Content-Type": "application/json",
