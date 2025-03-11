@@ -11,4 +11,6 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+    environment:
+      - PORT=3002  # Explicitly set port for Next.js
     restart: unless-stopped
