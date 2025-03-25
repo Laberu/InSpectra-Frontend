@@ -37,10 +37,10 @@ export default function ViewerPage() {
   }
 
   return (
-    <ProtectedRoute>
+    // <ProtectedRoute>
       <div>
         <Viewer modelUrl={modelUrl} textureSets={textureSets} modelInfos={modelInfos}/>
       </div>
-    </ProtectedRoute>
+    // </ProtectedRoute>
   );
 }
