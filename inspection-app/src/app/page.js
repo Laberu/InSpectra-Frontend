@@ -1,8 +1,19 @@
-// src/app/page.js
 "use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
-import Dashboard from './dashboard';
+export default function HomeRedirect() {
+  const router = useRouter();
+  const { user } = useAuth();
 
-export default function Home() {
-  return <Dashboard />;
+  useEffect(() => {
+    if (user) {
+      router.replace("/dashboard");
+    } else {
+      router.replace("/landing");
+    }
+  }, [user]);
+
+  return null;
 }
