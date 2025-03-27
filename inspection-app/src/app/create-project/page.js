@@ -2,54 +2,45 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
 import "./create-project.css";
 
 export default function CreateProject() {
   const router = useRouter();
+  const { user } = useAuth();
+
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
-  const [images, setImages] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
+  const [zipFile, setZipFile] = useState(null);
 
-  // Handle image upload and preview
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const newImages = [...images, ...files];
-
-    setImages(newImages);
-
-    // Generate image previews
-    const newPreviews = [...imagePreviews, ...files.map((file) => URL.createObjectURL(file))];
-    setImagePreviews(newPreviews);
-  };
-
-  // Remove selected image
-  const handleRemoveImage = (index) => {
-    const newImages = images.filter((_, i) => i !== index);
-    const newPreviews = imagePreviews.filter((_, i) => i !== index);
-
-    setImages(newImages);
-    setImagePreviews(newPreviews);
+  // Handle ZIP file upload
+  const handleZipUpload = (e) => {
+    const file = e.target.files[0];
+    if (file && file.name.endsWith(".zip")) {
+      setZipFile(file);
+    } else {
+      alert("Please upload a valid .zip file");
+    }
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!projectName || !description || images.length === 0) {
-      alert("Please fill all fields and upload at least one image.");
+    if (!projectName || !description || !zipFile || !user?.id) {
+      alert("Please fill all fields and upload a ZIP file.");
       return;
     }
 
-    // Create FormData object
     const formData = new FormData();
-    formData.append("projectName", projectName);
+    formData.append("user_id", user.id);
+    formData.append("name", projectName);
     formData.append("description", description);
-    images.forEach((image) => formData.append("images", image));
+    formData.append("file", zipFile);
 
     try {
-      const response = await fetch("/api/create-project", {
+      const response = await fetch("http://localhost:8001/projects/create", {
         method: "POST",
         body: formData,
       });
@@ -58,7 +49,8 @@ export default function CreateProject() {
         alert("Project Created Successfully!");
         router.push("/dashboard");
       } else {
-        throw new Error("Failed to create project");
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Failed to create project");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -67,44 +59,35 @@ export default function CreateProject() {
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="create-project-container">
-        <h1>Create a New Project</h1>
-        <form onSubmit={handleSubmit} className="project-form">
-          <label>Project Name:</label>
-          <input
-            type="text"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            required
-          />
+    <div className="create-project-container">
+      <h1>Create a New Project</h1>
+      <form onSubmit={handleSubmit} className="project-form">
+        <label>Project Name:</label>
+        <input
+          type="text"
+          value={projectName}
+          onChange={(e) => setProjectName(e.target.value)}
+          required
+        />
 
-          <label>Description:</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          ></textarea>
+        <label>Description:</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        ></textarea>
 
-          <label>Upload Images:</label>
-          <input type="file" multiple accept="image/*" onChange={handleImageUpload} />
+        <label>Upload ZIP File:</label>
+        <input type="file" accept=".zip" onChange={handleZipUpload} />
 
-          {/* Display selected images with remove button */}
-          <div className="image-preview">
-            {imagePreviews.map((src, index) => (
-              <div key={index} className="image-container">
-                <img src={src} alt={`Preview ${index}`} />
-                <button type="button" className="remove-button" onClick={() => handleRemoveImage(index)}>
-                  ✖
-                </button>
-              </div>
-            ))}
-          </div>
+        {zipFile && (
+          <p className="file-name-preview">Selected File: {zipFile.name}</p>
+        )}
 
-          <button type="submit" className="submit-button">Create Project</button>
-        </form>
-      </div>
+        <button type="submit" className="submit-button">
+          Create Project
+        </button>
+      </form>
     </div>
   );
 }

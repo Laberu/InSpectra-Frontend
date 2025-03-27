@@ -20,6 +20,8 @@ export default function Login() {
     e.preventDefault();
     setError(null);
 
+    console.log("AUTH_BACKEND_API_URL:", AUTH_BACKEND_API_URL);
+
     try {
       const response = await fetch(`${AUTH_BACKEND_API_URL}/auth/signin`, {  // Corrected syntax
         method: "POST",

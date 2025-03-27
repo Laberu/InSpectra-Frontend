@@ -6,14 +6,23 @@ import { NextResponse } from 'next/server';
 export async function POST(req) {
   try {
     const formData = await req.formData();
-    const zipFile = formData.get('file');
     const modelId = formData.get('modelId');
 
-    if (!zipFile || !modelId) {
-      return NextResponse.json({ error: 'Missing file or modelId' }, { status: 400 });
+    if (!modelId) {
+      return NextResponse.json({ error: 'Missing modelId' }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await zipFile.arrayBuffer());
+    const downloadUrl = `${process.env.NEXT_PUBLIC_STORAGE_BACKEND}/projects/download/job/${modelId}`;
+
+    const zipRes = await fetch(downloadUrl);
+    if (!zipRes.ok) {
+      return NextResponse.json(
+        { error: `Failed to download zip from storage. Status ${zipRes.status}` },
+        { status: zipRes.status }
+      );
+    }
+
+    const buffer = Buffer.from(await zipRes.arrayBuffer());
     const unzipped = unzipSync(new Uint8Array(buffer));
     const targetDir = path.join(process.cwd(), 'public', 'storage', modelId);
 
@@ -34,7 +43,7 @@ export async function POST(req) {
 
     return NextResponse.json({ message: 'Extraction completed' });
   } catch (err) {
-    console.error("Zip extract error:", err);
+    console.error('Zip extract error:', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

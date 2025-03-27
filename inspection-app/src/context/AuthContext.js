@@ -1,4 +1,3 @@
-// src/context/AuthContext.js
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
@@ -8,6 +7,7 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [accesstoken, setAccessToken] = useState(null);
+  const [loading, setLoading] = useState(true); // NEW: loading state
 
   useEffect(() => {
     const storedToken = localStorage.getItem("accesstoken");
@@ -16,6 +16,7 @@ export function AuthProvider({ children }) {
     if (storedToken && storedToken !== "undefined") {
       setAccessToken(storedToken);
     }
+
     if (storedUser && storedUser !== "undefined") {
       try {
         setUser(JSON.parse(storedUser));
@@ -24,6 +25,8 @@ export function AuthProvider({ children }) {
         localStorage.removeItem("user");
       }
     }
+
+    setLoading(false); // NEW: done loading
   }, []);
 
   const login = (userData, token) => {
@@ -41,7 +44,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, accesstoken, login, logout }}>
+    <AuthContext.Provider value={{ user, accesstoken, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

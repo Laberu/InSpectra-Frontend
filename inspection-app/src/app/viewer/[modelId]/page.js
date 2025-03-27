@@ -17,30 +17,25 @@ export default function ViewerPage() {
   useEffect(() => {
     const extractZipAndLoad = async () => {
       try {
-        // 1. Fetch zip from public/static location
-        const zipRes = await fetch(`/storage/${modelId}.zip`);
-        const zipBlob = await zipRes.blob();
-
-        // 2. Send it to the backend extract API
         const formData = new FormData();
-        formData.append("file", zipBlob, `${modelId}.zip`);
         formData.append("modelId", modelId);
-
+  
         const postRes = await fetch("/api/models/extract", {
           method: "POST",
           body: formData,
         });
-
+  
         if (!postRes.ok) throw new Error("Zip extraction failed");
-
+  
         setExtracted(true);
       } catch (err) {
         console.error("Extraction failed:", err);
       }
     };
-
+  
     extractZipAndLoad();
   }, [modelId]);
+  
 
   useEffect(() => {
     if (!extracted) return;

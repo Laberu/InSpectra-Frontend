@@ -3,35 +3,51 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { modelsData } from "../../data/modelsData";
 import Sidebar from "../../components/Sidebar";
 import "./dashboard.css";
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
   const [filter, setFilter] = useState("all");
   const [showFilterModal, setShowFilterModal] = useState(false);
+  const [models, setModels] = useState([]);
 
-//   useEffect(() => {
-//     if (!user) {
-//       router.replace("/login");
-//     }
-//   }, [user]);
+  // Redirect to login if not logged in
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login");
+    }
+  }, [user, loading]);
 
-//   if (!user) return null;
+  // Fetch project models from API
+  useEffect(() => {
+    if (!loading && user) {
+      const fetchProjects = async () => {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_HUB}/status/user/${user.id}`);
+          const data = await res.json();
+          setModels(data);
+        } catch (err) {
+          console.error("Failed to fetch projects:", err);
+        }
+      };
+
+      fetchProjects();
+    }
+  }, [user, loading]);
+
+  if (loading || !user) return null;
 
   const handleModelClick = (modelId) => {
     router.push(`/viewer/${modelId}`);
   };
 
-  const filteredModels = modelsData.filter((model) => {
+  const filteredModels = models.filter((model) => {
     if (filter === "all") return true;
-    if (filter === "finished")
-      return model.status === "Finished" && !model.signed;
-    if (filter === "finishedSigned")
-      return model.status === "Finished" && model.signed;
-    if (filter === "ongoing") return model.status === "Ongoing";
+    if (filter === "finished") return model.status === "Finished" && !model.signed;
+    if (filter === "finishedSigned") return model.status === "Finished" && model.signed;
+    if (filter === "ongoing") return model.status === "Ongoing" || model.status === "processing";
     return true;
   });
 
@@ -58,9 +74,9 @@ export default function DashboardPage() {
         <div className="models-grid">
           {filteredModels.map((model) => (
             <div
-              key={model.id}
+              key={model.job_id}
               className="model-card"
-              onClick={() => handleModelClick(model.id)}
+              onClick={() => handleModelClick(model.job_id)}
             >
               {model.thumbnail && (
                 <div className="thumbnail-container">
@@ -125,7 +141,8 @@ export default function DashboardPage() {
                       checked={filter === value}
                       onChange={(e) => setFilter(e.target.value)}
                     />
-                    {value.charAt(0).toUpperCase() + value.slice(1).replace("Signed", " / Signed")}
+                    {value.charAt(0).toUpperCase() +
+                      value.slice(1).replace("Signed", " / Signed")}
                     <br />
                   </label>
                 ))}
