@@ -3,37 +3,72 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { modelsData } from "../../data/modelsData";
 import Sidebar from "../../components/Sidebar";
 import "./dashboard.css";
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
   const [filter, setFilter] = useState("all");
   const [showFilterModal, setShowFilterModal] = useState(false);
+  const [models, setModels] = useState([]);
 
-//   useEffect(() => {
-//     if (!user) {
-//       router.replace("/login");
-//     }
-//   }, [user]);
+  // Redirect to login if not logged in
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login");
+    }
+  }, [user, loading]);
 
-//   if (!user) return null;
+  // Fetch project models from API
+  useEffect(() => {
+    if (!loading && user) {
+      const fetchProjects = async () => {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_HUB}/status/user/${user.id}`);
+          const data = await res.json();
+          setModels(data);
+        } catch (err) {
+          console.error("Failed to fetch projects:", err);
+        }
+      };
+
+      fetchProjects();
+    }
+  }, [user, loading]);
+
+  if (loading || !user) return null;
 
   const handleModelClick = (modelId) => {
     router.push(`/viewer/${modelId}`);
   };
 
-  const filteredModels = modelsData.filter((model) => {
+  const filteredModels = models.filter((model) => {
     if (filter === "all") return true;
-    if (filter === "finished")
-      return model.status === "Finished" && !model.signed;
-    if (filter === "finishedSigned")
-      return model.status === "Finished" && model.signed;
-    if (filter === "ongoing") return model.status === "Ongoing";
+    if (filter === "finished") return model.status === "finished" && !model.signed;
+    if (filter === "finishedSigned") return model.status === "finished" && model.signed;
+    if (filter === "ongoing") return model.status === "Ongoing" || model.status === "processing";
     return true;
   });
+
+  const handleDelete = async (modelId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this project?");
+    if (!confirmDelete) return;
+  
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HUB}/projects/delete/${modelId}`, {
+        method: "DELETE",
+      });
+  
+      if (res.ok) {
+        setModels((prev) => prev.filter((model) => model.job_id !== modelId));
+      } else {
+        console.error("Failed to delete project.");
+      }
+    } catch (err) {
+      console.error("Error deleting project:", err);
+    }
+  };  
 
   return (
     <div className="dashboard-layout">
@@ -58,9 +93,9 @@ export default function DashboardPage() {
         <div className="models-grid">
           {filteredModels.map((model) => (
             <div
-              key={model.id}
+              key={model.job_id}
               className="model-card"
-              onClick={() => handleModelClick(model.id)}
+              onClick={() => handleModelClick(model.job_id)}
             >
               {model.thumbnail && (
                 <div className="thumbnail-container">
@@ -76,12 +111,23 @@ export default function DashboardPage() {
                   model.thumbnail ? "with-thumbnail" : "no-thumbnail"
                 }`}
               >
-                <div className="model-top">
-                  <h3 className="model-title">{model.name}</h3>
-                </div>
+              <div className="model-top">
+                <h3 className="model-title">{model.name}</h3>
+                <button
+                  className="delete-button"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent card click
+                    handleDelete(model.job_id);
+                  }}
+                  title="Delete project"
+                >
+                  🗑️
+                </button>
+              </div>
+
                 <span
                   className={`model-status ${
-                    model.status === "Finished" ? "finished" : "ongoing"
+                    model.status === "finished" ? "finished" : "ongoing"
                   } ${model.signed ? "signed" : ""}`}
                 >
                   {model.status}
@@ -125,7 +171,8 @@ export default function DashboardPage() {
                       checked={filter === value}
                       onChange={(e) => setFilter(e.target.value)}
                     />
-                    {value.charAt(0).toUpperCase() + value.slice(1).replace("Signed", " / Signed")}
+                    {value.charAt(0).toUpperCase() +
+                      value.slice(1).replace("Signed", " / Signed")}
                     <br />
                   </label>
                 ))}

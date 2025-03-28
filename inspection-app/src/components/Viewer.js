@@ -24,6 +24,12 @@ const Viewer = ({ modelUrl, textureSets, modelInfos }) => {
   const [selectedTextureSet, setSelectedTextureSet] = useState('setA');
   const [selectedPosition, setSelectedPosition] = useState(null);
 
+
+  const [assistantQuery, setAssistantQuery] = useState('');
+  const [assistantResponse, setAssistantResponse] = useState('');
+  const [assistantLoading, setAssistantLoading] = useState(false);
+
+
   // Model/camera info
   const { positions = [], modelInfo = {} } = modelInfos || {};
 
@@ -338,77 +344,106 @@ const Viewer = ({ modelUrl, textureSets, modelInfos }) => {
                   {pos.name}
                 </button>
               ))}
-              <button onClick={resetCamera}>Reset Camera</button>
             </div>
           )}
         </div>
+
+        {/* Project Assistant */}
+        <div className="tools-section">
+          <div className="tools-header" onClick={() => toggleSection('assistant')}>
+            Project Assistant {expandedSections.assistant ? '▲' : '▼'}
+          </div>
+          {expandedSections.assistant && (
+            <div className="tools-content">
+              <textarea
+                placeholder="Ask something about the model or code..."
+                value={assistantQuery}
+                onChange={(e) => setAssistantQuery(e.target.value)}
+                rows={3}
+                style={{ width: '100%' }}
+              />
+              <button
+                onClick={async () => {
+                  setAssistantLoading(true);
+                  setAssistantResponse('');
+                  try {
+                    const res = await fetch('/api/project-assistant', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        query: assistantQuery,
+                        modelInfos,
+                      }),
+                    });           
+                    const data = await res.json();
+                    setAssistantResponse(data.answer);
+                  } catch (err) {
+                    setAssistantResponse('Error getting response.');
+                  }
+                  setAssistantLoading(false);
+                }}
+                disabled={assistantLoading || !assistantQuery.trim()}
+              >
+                {assistantLoading ? 'Thinking...' : 'Ask'}
+              </button>
+              {assistantResponse && (
+                <div className="assistant-response">
+                  <strong>Response:</strong>
+                  <p>{assistantResponse}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
       </div>
 
       {/* Main 3D Viewer */}
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
 
       {/* Info Panel */}
-      {selectedPosition && (
-        <div className="info-panel">
-          {/* Top Image Section */}
-          <div className="info-panel__image">
-            <img
-              src="https://via.placeholder.com/600x300" 
-              alt="Defect Detail"
-            />
-            <button className="info-panel__close" onClick={closeInfoPanel}>✖</button>
-          </div>
-
-          {/* Defect Header */}
-          <div className="info-panel__header">
-            <p>Defect N/A</p>
-          </div>
-
-          {/* Property Table */}
-          <div className="info-panel__table">
-            <table>
-              <tbody>
-                <tr>
-                  <th>Inspector</th>
-                  <td>N/A</td>
-                </tr>
-                <tr>
-                  <th>Position</th>
-                  <td>N/A</td>
-                </tr>
-                <tr>
-                  <th>Date</th>
-                  <td>N/A</td>
-                </tr>
-                <tr>
-                  <th>Damage Types</th>
-                  <td>N/A</td>
-                </tr>
-                <tr>
-                  <th>Accuracy</th>
-                  <td>N/A</td>
-                </tr>
-                <tr>
-                  <th>Damage Levels</th>
-                  <td>N/A</td>
-                </tr>
-                <tr>
-                  <th>Verified</th>
-                  <td>N/A</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* Additional Details */}
-          <div className="info-panel__details">
-            <h4>Additional Details</h4>
-            <p><strong>Location:</strong> N/A</p>
-            <p><strong>Damage Area:</strong> N/A</p>
-            <p><strong>Damage Depth:</strong> N/A</p>
-          </div>
+      {selectedPosition && selectedPosition.defect && (
+      <div className="info-panel">
+        {/* Top Image Section */}
+        <div className="info-panel__image">
+          <img
+            src={selectedPosition.defect.title || 'Defect Image'}
+          />
+          <button className="info-panel__close" onClick={closeInfoPanel}>✖</button>
         </div>
-      )}
+
+        {/* Defect Header */}
+        <div className="info-panel__header">
+          <p>{selectedPosition.defect.title || 'Unknown Defect'}</p>
+        </div>
+
+        {/* Property Table */}
+        <div className="info-panel__table">
+          <table>
+            <tbody>
+              <tr><th>Inspector</th><td>{selectedPosition.defect.inspector || 'N/A'}</td></tr>
+              <tr><th>Position</th><td>{selectedPosition.defect.position || 'N/A'}</td></tr>
+              <tr><th>Date</th><td>{selectedPosition.defect.date || 'N/A'}</td></tr>
+              <tr><th>Damage Types</th><td>{selectedPosition.defect.damageTypes?.join(', ') || 'N/A'}</td></tr>
+              <tr><th>Accuracy</th><td>{selectedPosition.defect.accuracy || 'N/A'}</td></tr>
+              <tr><th>Damage Levels</th><td>{selectedPosition.defect.damageLevels || 'N/A'}</td></tr>
+              <tr><th>Verified</th><td>{selectedPosition.defect.verified ? 'Yes' : 'No'}</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Additional Details */}
+        <div className="info-panel__details">
+          <h4>Additional Details</h4>
+          <p><strong>Location:</strong> {selectedPosition.defect.location || 'N/A'}</p>
+          <p><strong>Damage Area:</strong> {selectedPosition.defect.damageArea || 'N/A'}</p>
+          <p><strong>Damage Depth:</strong> {selectedPosition.defect.damageDepth || 'N/A'}</p>
+        </div>
+
+      </div>
+    )}
     </div>
   );
 };
