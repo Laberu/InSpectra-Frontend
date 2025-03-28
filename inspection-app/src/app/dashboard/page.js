@@ -45,11 +45,30 @@ export default function DashboardPage() {
 
   const filteredModels = models.filter((model) => {
     if (filter === "all") return true;
-    if (filter === "finished") return model.status === "Finished" && !model.signed;
-    if (filter === "finishedSigned") return model.status === "Finished" && model.signed;
+    if (filter === "finished") return model.status === "finished" && !model.signed;
+    if (filter === "finishedSigned") return model.status === "finished" && model.signed;
     if (filter === "ongoing") return model.status === "Ongoing" || model.status === "processing";
     return true;
   });
+
+  const handleDelete = async (modelId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this project?");
+    if (!confirmDelete) return;
+  
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HUB}/projects/delete/${modelId}`, {
+        method: "DELETE",
+      });
+  
+      if (res.ok) {
+        setModels((prev) => prev.filter((model) => model.job_id !== modelId));
+      } else {
+        console.error("Failed to delete project.");
+      }
+    } catch (err) {
+      console.error("Error deleting project:", err);
+    }
+  };  
 
   return (
     <div className="dashboard-layout">
@@ -92,12 +111,23 @@ export default function DashboardPage() {
                   model.thumbnail ? "with-thumbnail" : "no-thumbnail"
                 }`}
               >
-                <div className="model-top">
-                  <h3 className="model-title">{model.name}</h3>
-                </div>
+              <div className="model-top">
+                <h3 className="model-title">{model.name}</h3>
+                <button
+                  className="delete-button"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent card click
+                    handleDelete(model.job_id);
+                  }}
+                  title="Delete project"
+                >
+                  🗑️
+                </button>
+              </div>
+
                 <span
                   className={`model-status ${
-                    model.status === "Finished" ? "finished" : "ongoing"
+                    model.status === "finished" ? "finished" : "ongoing"
                   } ${model.signed ? "signed" : ""}`}
                 >
                   {model.status}

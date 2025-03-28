@@ -10,7 +10,8 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Missing modelId' }, { status: 400 });
     }
 
-    const dirPath = path.join(process.cwd(), 'public', 'storage', modelId);
+    // Updated path to match tmp-based storage
+    const dirPath = path.join(process.cwd(), 'tmp', 'storage', modelId);
     await rm(dirPath, { recursive: true, force: true });
 
     return NextResponse.json({ message: `Deleted ${modelId} folder.` });

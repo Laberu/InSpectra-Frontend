@@ -40,7 +40,7 @@ export default function CreateProject() {
     formData.append("file", zipFile);
 
     try {
-      const response = await fetch("http://localhost:8001/projects/create", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HUB}/projects/create`, {
         method: "POST",
         body: formData,
       });

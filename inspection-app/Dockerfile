@@ -1,4 +1,4 @@
-# Use Node.js 20 for development
+# Use Node.js 20 Alpine base image
 FROM node:20-alpine
 
 # Set working directory
@@ -8,14 +8,21 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --legacy-peer-deps
 
-# Copy all necessary files
+# Copy source files
 COPY . .
 
-# Expose development port
+# Build Next.js app
+RUN npx next build
+
+# Create writable tmp folder for extracted files
+RUN mkdir -p /app/tmp/storage
+
+# Expose the app port
 EXPOSE 3002
 
-# Set environment to development
-ENV NODE_ENV=development
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3002
 
-# Run the dev server
-CMD ["npm", "run", "dev"]
+# Start the app
+CMD ["npx", "next", "start"]

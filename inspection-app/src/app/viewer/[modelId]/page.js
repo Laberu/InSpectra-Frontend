@@ -26,7 +26,10 @@ export default function ViewerPage() {
         });
   
         if (!postRes.ok) throw new Error("Zip extraction failed");
-  
+
+        // Wait 300ms after extraction finishes
+        await new Promise((resolve) => setTimeout(resolve, 300));
+
         setExtracted(true);
       } catch (err) {
         console.error("Extraction failed:", err);
@@ -46,8 +49,13 @@ export default function ViewerPage() {
         const textures = await fetchTextures(modelId);
         const infos = await fetchInfos(modelId);
         setModelUrl(model);
+        console.log("Model URL:", model);
+        
         setTextureSets(textures);
+        console.log("Texture Sets:", textures);
+        
         setModelInfos(infos);
+        console.log("Model Infos:", infos);
       } catch (error) {
         console.error("Error loading extracted resources:", error);
       }
