@@ -73,6 +73,29 @@ export default function Register() {
     setShowTermsModal(false); // Close the modal
   };
 
+  const handleSocialLogin = (platform) => {
+    if (platform === "Google") {
+      window.location.href = `${AUTH_BACKEND_API_URL}/auth/google`;
+    }
+  };
+
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    const email = urlParams.get("email");
+  
+    if (token && email) {
+      // Assuming you use some kind of auth context
+      const userData = { email };
+      // You might need to update this based on your actual AuthContext
+      // login(userData, token); 
+      router.push('/');
+    }
+  }, []);
+  
+
+
   return (
     <div className="register-body">
     <div className="register-container">
@@ -184,7 +207,7 @@ export default function Register() {
           <button
             className="google-button"
             aria-label="Sign up with Google"
-            onClick={() => alert("Google Sign-Up Clicked!")}
+            onClick={() => handleSocialLogin("Google")}
           >
             <img
               src="https://developers.google.com/identity/images/g-logo.png"
