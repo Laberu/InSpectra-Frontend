@@ -1,108 +1,107 @@
-.create-project-container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 25px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/*******************************************
+ * Centered Create Project Page Layout
+ *******************************************/
+ .page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f4f4;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: "Inter", Arial, sans-serif;
 }
 
-h1 {
+.create-project-container {
+  width: 100%;
+  max-width: 800px;
+  padding: 40px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.create-project-container h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #b22222;
   text-align: center;
-  font-size: 2rem;
-  font-weight: 600;
 }
 
 .project-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
-label {
+.project-form label {
+  font-weight: 600;
   font-size: 1rem;
-  font-weight: 500;
+  color: #333;
 }
 
-input,
-textarea {
+.project-form input[type="text"],
+.project-form textarea,
+.project-form input[type="file"] {
   padding: 12px;
+  font-size: 1rem;
   border: 1px solid #ddd;
   border-radius: 6px;
-  font-size: 1rem;
-  transition: border 0.3s ease;
+  background: #fafafa;
+  font-family: inherit;
 }
 
-input:focus,
-textarea:focus {
-  border-color: #b22222;
-  outline: none;
+.project-form textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
-textarea {
-  height: 120px;
+.file-name-preview {
+  font-size: 0.9rem;
+  color: #555;
+  font-style: italic;
+  margin-top: -10px;
 }
 
 .submit-button {
-  background: #b22222;
+  background: #000;
   color: white;
   border: none;
   padding: 12px;
-  border-radius: 6px;
   font-size: 1rem;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease;
+  font-weight: 600;
 }
 
 .submit-button:hover {
-  background: #8b0000;
+  background: #0cfd80;
+  color: #000;
 }
 
-/* Image Preview */
-.image-preview {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.submit-button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.loading-spinner {
+  font-size: 0.9rem;
+  color: #777;
+  text-align: center;
   margin-top: 10px;
+  animation: pulse 1.2s infinite;
 }
 
-.image-container {
-  position: relative;
-  display: inline-block;
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
 }
 
-.image-preview img {
-  width: 90px;
-  height: 90px;
-  object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  transition: transform 0.3s;
-}
-
-.image-preview img:hover {
-  transform: scale(1.05);
-}
-
-/* Small remove button on top-right */
-.remove-button {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  background: rgba(255, 0, 0, 0.8);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  font-size: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s;
-}
-
-.remove-button:hover {
-  background: red;
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .create-project-container {
+    padding: 20px;
+  }
 }

@@ -19,7 +19,7 @@ import fs from 'fs';
 import path from 'path';
 
 export async function GET(req, { params }) {
-  const { modelId } = params;
+  const { modelId } = await params;
   const { searchParams } = new URL(req.url);
   const file = searchParams.get('file');
 

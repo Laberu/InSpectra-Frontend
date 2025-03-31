@@ -1,7 +1,6 @@
-// src/app/login/page.js
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import "./login.css"; // Import the CSS file for styling
 import { useRouter } from "next/navigation";
@@ -14,16 +13,15 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const AUTH_BACKEND_API_URL = process.env.NEXT_PUBLIC_AUTH_BACKEND_API_URL; // Ensure it's prefixed with NEXT_PUBLIC
+  const AUTH_BACKEND_API_URL = process.env.NEXT_PUBLIC_AUTH_BACKEND_API_URL;
 
+  // Handle standard email/password login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
 
-    console.log("AUTH_BACKEND_API_URL:", AUTH_BACKEND_API_URL);
-
     try {
-      const response = await fetch(`${AUTH_BACKEND_API_URL}/auth/signin`, {  // Corrected syntax
+      const response = await fetch(`${AUTH_BACKEND_API_URL}/auth/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,18 +36,13 @@ export default function Login() {
       }
 
       const data = await response.json();
-      console.log("Login success", data);
-      
-      // Construct a user object from the response
       const userData = {
         id: data.userid,
         email: data.email,
-        // You can add more fields here if needed
+        // Add more fields if necessary
       };
 
-      // Save the token and user info in your AuthContext and localStorage
       login(userData, data.accesstoken);
-
       router.push('/');
     } catch (err) {
       console.error("Error logging in", err);
@@ -57,15 +50,34 @@ export default function Login() {
     }
   };
 
+  // Handle social login (Google)
   const handleSocialLogin = (platform) => {
-    alert(`Login with ${platform} clicked!`);
+    if (platform === "Google") {
+      window.location.href = `${AUTH_BACKEND_API_URL}/auth/google`;
+    }
   };
 
+  // Optional: Handle token after redirect from Google
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    const email = urlParams.get("email");
+
+    if (token && email) {
+      const userData = {
+        email,
+      };
+      login(userData, token);
+      router.push('/');
+    }
+  }, []);
+
   return (
+    <div className="login-body">
     <div className="login-container">
       {/* Left section: Sign-in form */}
       <div className="login-form">
-        <h2>Signin</h2>
+        <h2>Sign In</h2>
         <form onSubmit={handleLogin} className="form-container">
           <input
             type="text"
@@ -93,7 +105,7 @@ export default function Login() {
 
         {error && <p className="error-message">{error}</p>}
 
-        <p>or signin with</p>
+        <p>or sign in with</p>
         <div className="social-buttons">
           <button
             className="google-button"
@@ -105,7 +117,7 @@ export default function Login() {
               alt="Google Logo"
               className="google-icon"
             />
-            Sign in with Google
+            Continue with Google
           </button>
         </div>
       </div>
@@ -121,6 +133,7 @@ export default function Login() {
           No account yet? Signup.
         </Link>
       </div>
+    </div>
     </div>
   );
 }

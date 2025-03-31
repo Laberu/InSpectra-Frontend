@@ -22,20 +22,28 @@ export default function DashboardPage() {
 
   // Fetch project models from API
   useEffect(() => {
+    let intervalId;
+  
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_HUB}/status/user/${user.id}`);
+        const data = await res.json();
+        setModels(data);
+      } catch (err) {
+        console.error("Failed to fetch projects:", err);
+      }
+    };
+  
     if (!loading && user) {
-      const fetchProjects = async () => {
-        try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_HUB}/status/user/${user.id}`);
-          const data = await res.json();
-          setModels(data);
-        } catch (err) {
-          console.error("Failed to fetch projects:", err);
-        }
-      };
-
-      fetchProjects();
+      fetchProjects(); // Initial fetch
+      intervalId = setInterval(fetchProjects, 2000); // Poll every 2 seconds
     }
+  
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [user, loading]);
+  
 
   if (loading || !user) return null;
 
@@ -45,8 +53,7 @@ export default function DashboardPage() {
 
   const filteredModels = models.filter((model) => {
     if (filter === "all") return true;
-    if (filter === "finished") return model.status === "finished" && !model.signed;
-    if (filter === "finishedSigned") return model.status === "finished" && model.signed;
+    if (filter === "finished") return model.status === "finished" && !model.signed; 
     if (filter === "ongoing") return model.status === "Ongoing" || model.status === "processing";
     return true;
   });
@@ -74,6 +81,10 @@ export default function DashboardPage() {
     <div className="dashboard-layout">
       <Sidebar />
       <div className="dashboard-main">
+        <div className="user-email-bar">
+          <span>{user?.email}</span>
+        </div>
+
         <h1 className="models-title">Projects</h1>
         <div className="dashboard-actions">
           <button
@@ -93,10 +104,16 @@ export default function DashboardPage() {
         <div className="models-grid">
           {filteredModels.map((model) => (
             <div
-              key={model.job_id}
-              className="model-card"
-              onClick={() => handleModelClick(model.job_id)}
-            >
+                key={model.job_id}
+                className={`model-card ${model.status !== "finished" ? "disabled-card" : ""}`}
+                onClick={() => {
+                  if (model.status === "finished") {
+                    handleModelClick(model.job_id);
+                  }
+                }}
+                title={model.status !== "finished" ? "This project is still processing." : ""}
+              >
+
               {model.thumbnail && (
                 <div className="thumbnail-container">
                   <img

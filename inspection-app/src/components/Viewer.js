@@ -8,8 +8,11 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { gsap } from 'gsap';
 import './Viewer.css'; // Import the new CSS
+import { useRouter } from 'next/navigation';
 
-const Viewer = ({ modelUrl, textureSets, modelInfos }) => {
+const Viewer = ({ modelUrl, textureSets, modelInfos, modelId }) => {
+
+  const router = useRouter(); 
   const mountRef = useRef(null);
   const rendererRef = useRef(null);
   const controlsRef = useRef(null);
@@ -243,6 +246,34 @@ const Viewer = ({ modelUrl, textureSets, modelInfos }) => {
     }
   }, [selectedTextureSet]);
 
+
+  // Debug camera position & target in console
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!cameraRef.current || !controlsRef.current) return;
+
+      const camPos = cameraRef.current.position;
+      const target = controlsRef.current.target;
+
+      console.log(JSON.stringify({
+        position: {
+          x: parseFloat(camPos.x.toFixed(5)),
+          y: parseFloat(camPos.y.toFixed(5)),
+          z: parseFloat(camPos.z.toFixed(5)),
+        },
+        rotationTarget: {
+          x: parseFloat(target.x.toFixed(5)),
+          y: parseFloat(target.y.toFixed(5)),
+          z: parseFloat(target.z.toFixed(5)),
+        }
+      }, null, 2));
+    }, 1000); // every second
+
+    return () => clearInterval(interval);
+  }, []);
+
+
+
   // Handlers
   const handleBackgroundColorChange = (e) => {
     setBackgroundColor(e.target.value);
@@ -285,6 +316,16 @@ const Viewer = ({ modelUrl, textureSets, modelInfos }) => {
 
   return (
     <div className="viewer-container">
+
+    {loading && (
+          <div className="viewer-loading-overlay">
+            <div className="viewer-loading-box">
+              <div className="viewer-spinner" />
+              <p>Loading 3D model...</p>
+            </div>
+          </div>
+        )}
+
       {/* Tools Bar */}
       <div className="tools-bar">
         <h2>Project</h2>
@@ -310,7 +351,7 @@ const Viewer = ({ modelUrl, textureSets, modelInfos }) => {
           {expandedSections.lighting && (
             <div className="tools-content">
               <label>Global Light Intensity:</label>
-              <input type="range" min="0" max="2" step="0.1" value={lightIntensity} onChange={(e) => setLightIntensity(parseFloat(e.target.value))} />
+              <input type="range" min="0" max="5" step="0.1" value={lightIntensity} onChange={(e) => setLightIntensity(parseFloat(e.target.value))} />
             </div>
           )}
         </div>
@@ -398,6 +439,57 @@ const Viewer = ({ modelUrl, textureSets, modelInfos }) => {
           )}
         </div>
 
+
+        {/* Back button at bottom */}
+        <div className="back-button-wrapper">
+          <button className="back-button" onClick={() => router.push('/dashboard')}>
+            ← Dashboard
+          </button>
+        </div>
+
+        <button
+          className="back-button"
+          style={{ marginTop: '8px' }}
+          onClick={async () => {
+            try {
+              const res = await fetch(`/api/models/${modelId}/generate-report`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ modelInfos }),
+              });
+
+              if (res.ok) {
+                const downloadUrl = `/api/models/${modelId}/download-report`;
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = `report-${modelId}.pdf`;
+                a.click();
+              } else {
+                alert('Failed to generate report.');
+              }
+            } catch (err) {
+              console.error('Report download failed:', err);
+            }
+          }}
+        >
+          📄 Download Report
+        </button>
+
+        <button
+          className="back-button"
+          style={{ marginTop: '8px' }}
+          onClick={() => {
+            const a = document.createElement('a');
+            a.href = `/api/models/${modelId}/download-fbx`;
+            a.download = `${modelInfo.name || modelId}.fbx`; // Use name if available
+            a.click();
+          }}
+        >
+          📦 Download Model (.fbx)
+        </button>
+
       </div>
 
       {/* Main 3D Viewer */}
@@ -408,8 +500,10 @@ const Viewer = ({ modelUrl, textureSets, modelInfos }) => {
       <div className="info-panel">
         {/* Top Image Section */}
         <div className="info-panel__image">
-          <img
-            src={selectedPosition.defect.title || 'Defect Image'}
+        <img
+            src={`/api/models/${modelId
+}/texture?file=${encodeURIComponent(selectedPosition.defect.image)}`}
+            alt={selectedPosition.defect.title || 'Defect Image'}
           />
           <button className="info-panel__close" onClick={closeInfoPanel}>✖</button>
         </div>
