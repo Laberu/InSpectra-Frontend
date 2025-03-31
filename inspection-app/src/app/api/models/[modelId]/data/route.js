@@ -4,7 +4,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 export async function GET(req, { params }) {
-  const { modelId } = params;
+  const { modelId } = await params;
 
   const filePath = path.join(process.cwd(), 'tmp', 'storage', modelId, 'data.json');
 

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { fetchModel } from '../../../lib/fetchModel';
 import { fetchTextures } from '../../../lib/fetchTextures';
 import { fetchInfos } from '../../../lib/fetchInfos';
+import './ViewerPage.css';
 
 export default function ViewerPage() {
   const { modelId } = useParams();
@@ -76,14 +77,31 @@ export default function ViewerPage() {
   }, [modelId, extracted]);
 
   if (!modelUrl || !textureSets || !modelInfos) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loading-screen">
+        <div className="loading-box">
+          <div className="loading-spinner" />
+          <p>Loading model, textures & metadata...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  else{
+      return (
+      // <ProtectedRoute>
+      <div>
+        <Viewer
+          modelUrl={modelUrl}
+          textureSets={textureSets}
+          modelInfos={modelInfos}
+          modelId={modelId}
+        />
+
+      </div>
+      // </ProtectedRoute>
+    );
   }
 
-  return (
-    // <ProtectedRoute>
-    <div>
-      <Viewer modelUrl={modelUrl} textureSets={textureSets} modelInfos={modelInfos} />
-    </div>
-    // </ProtectedRoute>
-  );
+
 }

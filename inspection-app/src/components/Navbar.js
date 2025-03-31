@@ -30,21 +30,11 @@ export default function Navbar() {
 
         {/* Desktop Nav Links */}
         <ul className="navbar-links">
-          <li>
-            <Link href="/">Home</Link>
-          </li>
-          <li>
-            <Link href="/partners">Partners</Link>
-          </li>
-          <li>
-            <Link href="/features">Features</Link>
-          </li>
-          <li>
-            <Link href="/use-case">Use Case</Link>
-          </li>
-          <li>
-            <Link href="/contact">Contact Us</Link>
-          </li>
+        <li><a href="#hero">Home</a></li>
+          <li><a href="#partners">Partners</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#usecases">Use Cases</a></li>
+          <li><a href="#footer">Contact Us</a></li>
         </ul>
 
         {/* Desktop CTA Button */}
@@ -53,7 +43,7 @@ export default function Navbar() {
             className="navbar-demo-btn"
             onClick={() => router.push("/login")}
           >
-            Demo
+            Sign In
           </button>
         </div>
 
@@ -68,11 +58,11 @@ export default function Navbar() {
       {/* Mobile Menu (hidden by default on desktop) */}
       <div className={`mobile-menu ${isMenuOpen ? "open" : ""}`}>
         <ul className="mobile-nav-links">
-          <li onClick={() => handleNavClick("/")}>Home</li>
-          <li onClick={() => handleNavClick("/partners")}>Partners</li>
-          <li onClick={() => handleNavClick("/features")}>Features</li>
-          <li onClick={() => handleNavClick("/use-case")}>Use Case</li>
-          <li onClick={() => handleNavClick("/contact")}>Contact Us</li>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#partners">Partners</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#usecases">Use Cases</a></li>
+          <li><a href="#footer">Contact Us</a></li>
         </ul>
         <div className="mobile-cta">
           <button

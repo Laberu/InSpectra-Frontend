@@ -74,10 +74,11 @@ export default function Register() {
   };
 
   return (
+    <div className="register-body">
     <div className="register-container">
       {/* Left section: Registration form */}
       <div className="register-form">
-        <h2>Signup</h2>
+        <h2>Sign Up</h2>
 
         {/* Display error message if any */}
         {error && <p className="error-message">{error}</p>}
@@ -222,6 +223,7 @@ export default function Register() {
           Already have an account? Sign in.
         </Link>
       </div>
+    </div>
     </div>
   );
 }

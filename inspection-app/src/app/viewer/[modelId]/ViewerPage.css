@@ -1,0 +1,41 @@
+/* Centered full-page loading screen */
+.loading-screen {
+    height: 100vh;
+    width: 100vw;
+    background: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Loading box styling */
+  .loading-box {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: "Inter", sans-serif;
+  }
+  
+  /* Spinner animation */
+  .loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #ccc;
+    border-top: 5px solid #b22222;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loading-box p {
+    font-size: 1rem;
+    color: #555;
+  }
+  

@@ -3,7 +3,7 @@ import path from 'path';
 import { NextResponse } from 'next/server';
 
 export async function GET(req, { params }) {
-  const { modelId } = params;
+  const { modelId } = await params;
   const filePath = path.join(process.cwd(), 'tmp', 'storage', modelId, 'model.fbx');
 
   try {

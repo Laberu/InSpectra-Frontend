@@ -1,123 +1,162 @@
-/* components/Viewer.css */
-
-
-body {
-    margin: 0px;
+/*******************************************
+ * Global
+ *******************************************/
+ body {
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  background: #f4f4f4;
+  color: #333;
 }
 
-/* Viewer Container */
+/*******************************************
+ * Viewer Container Layout
+ *******************************************/
 .viewer-container {
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  /* Tools Bar */
-.tools-bar {
-  width: 300px;
-  height: 100vh;
-  background: #3b3f45;
-  color: white;
-  overflow-y: auto;
-  padding: 10px;
   display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #f4f4f4;
+}
+
+/*******************************************
+ * Tools Sidebar (like dashboard cards)
+ *******************************************/
+.tools-bar {
+  width: 320px;
+  background: white;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+
+    display: flex;
   flex-direction: column;
 }
 
-/* Section Header */
+.tools-bar h2 {
+  font-size: 1.5rem;
+  color: #b22222;
+  margin-bottom: 20px;
+}
+
+/*******************************************
+ * Section Accordion Style
+ *******************************************/
+.tools-section {
+  margin-bottom: 20px;
+}
+
 .tools-header {
-  background: #2c2f33;
+  background: #f4f4f4;
+  color: #333;
   padding: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
-  margin-bottom: 5px;
-  border-radius: 4px;
+  transition: background 0.2s;
 }
 
-/* General Section */
+.tools-header:hover {
+  background: #eaeaea;
+}
+
 .tools-content {
-  margin-bottom: 15px;
-}
-
-/* Camera Controls */
-.camera-controls {
-  text-align: center;
-}
-
-.camera-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.camera-grid button {
-  background: #444;
-  color: white;
-  border: none;
+  margin-top: 10px;
   padding: 10px;
-  font-size: 16px;
-  border-radius: 4px;
-  cursor: pointer;
+  background: #fafafa;
+  border-radius: 6px;
+  border: 1px solid #eee;
 }
 
-.reset-camera-btn {
-  background: #4a90e2;
-  border: none;
+.tools-content label {
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.tools-content input,
+.tools-content select,
+.tools-content textarea,
+.tools-content button {
+  width: 100%;
   padding: 8px;
-  color: white;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
   border-radius: 4px;
-  cursor: pointer;
+  border: 1px solid #ccc;
+  font-family: inherit;
 }
 
-/* Layer List */
-.layer-list {
+.tools-content input[type="color"] {
+  padding: 0;
+  height: 36px;
+}
+
+.tools-content button {
+  background: #b22222;
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.tools-content button:hover {
+  background: #8b0000;
+}
+
+.tools-content button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+/*******************************************
+ * Assistant Response
+ *******************************************/
+.assistant-response {
+  background: #141414;
+  color: #fff;
+  font-size: 0.85rem;
+  padding: 10px;
+  border-radius: 6px;
+  white-space: pre-wrap;
   max-height: 200px;
   overflow-y: auto;
-  background: #2c2f33;
-  border-radius: 4px;
-  padding: 5px;
 }
 
-.layer-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
-  border-bottom: 1px solid #444;
-  cursor: pointer;
+/*******************************************
+ * 3D Viewer Area
+ *******************************************/
+.viewer-container > div[ref] {
+  flex-grow: 1;
+  height: 100%;
 }
 
-.layer-item:hover {
-  background: #444;
-  border-radius: 4px;
-}
-
-
-  
-
-/* Info Panel */
+/*******************************************
+ * Info Panel
+ *******************************************/
 .info-panel {
   position: fixed;
-  right: 0;
   top: 0;
+  right: 0;
   width: 400px;
   height: 100vh;
   background: #fff;
-  border-left: 2px solid #ccc;
+  border-left: 1px solid #ccc;
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.05);
   overflow-y: auto;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  font-family: Arial, sans-serif;
+  font-family: inherit;
 }
 
-/* Top Image Section */
 .info-panel__image {
   position: relative;
-  width: 100%;
   height: 200px;
-  overflow: hidden;
   background: #f0f0f0;
+  overflow: hidden;
 }
 
 .info-panel__image img {
@@ -126,37 +165,32 @@ body {
   object-fit: cover;
 }
 
-.info-panel__close,
-.info-panel__fullscreen {
+.info-panel__close {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0,0,0,0.6);
   color: white;
   border: none;
-  padding: 5px 8px;
+  padding: 6px 10px;
   font-size: 14px;
   cursor: pointer;
   border-radius: 4px;
-  margin-left: 5px;
 }
 
-.info-panel__fullscreen {
-  right: 50px;
-}
-
-/* Header Section */
 .info-panel__header {
-  background: #f5f5f5;
+  background: #fafafa;
   padding: 10px;
-  font-size: 14px;
-  font-weight: bold;
   border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #b22222;
 }
 
-/* Property Table */
-.info-panel__table {
-  padding: 10px;
+.info-panel__table,
+.info-panel__details {
+  padding: 16px;
+  font-size: 0.9rem;
 }
 
 .info-panel__table table {
@@ -164,74 +198,116 @@ body {
   border-collapse: collapse;
 }
 
-.info-panel__table th {
-  text-align: left;
-  font-weight: bold;
-  padding: 8px 5px;
-  background: #f9f9f9;
-}
-
+.info-panel__table th,
 .info-panel__table td {
-  padding: 8px 5px;
+  padding: 6px 4px;
   border-bottom: 1px solid #eee;
-}
-
-/* Additional Details */
-.info-panel__details {
-  padding: 10px;
-  margin-top: 10px;
-  background: #f9f9f9;
-  border-radius: 4px;
+  text-align: left;
 }
 
 .info-panel__details h4 {
-  margin-bottom: 5px;
-  font-size: 14px;
+  margin: 10px 0 6px;
   font-weight: bold;
+  font-size: 1rem;
 }
 
 .info-panel__details p {
   margin: 4px 0;
-  font-size: 12px;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+/*******************************************
+ * Responsive
+ *******************************************/
+@media (max-width: 768px) {
+  .tools-bar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .info-panel {
+    width: 100%;
+    height: 50vh;
+    top: auto;
+    bottom: 0;
+    border-left: none;
+    border-top: 1px solid #ccc;
+  }
+
+  .viewer-container {
+    flex-direction: column;
+  }
+}
+
+.back-button-wrapper {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: center;
 }
 
 
-/* Project Assistant */
-.tools-content textarea {
-  width: 100%;
-  padding: 8px;
+.back-button {
+  background: none;
+  color: #777;
   border: none;
-  border-radius: 4px;
-  resize: vertical;
-  font-size: 14px;
-  margin-bottom: 10px;
-  font-family: inherit;
-}
-
-.tools-content button {
-  background: #4caf50;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  font-size: 14px;
-  border-radius: 4px;
+  font-size: 0.85rem;
   cursor: pointer;
+  padding: 6px 12px;
+  transition: color 0.2s;
+  font-weight: 500;
 }
 
-.tools-content button:disabled {
-  background: #888;
-  cursor: not-allowed;
+.back-button:hover {
+  color: #b22222;
 }
 
-.assistant-response {
-  background: #2c2f33;
-  padding: 10px;
-  border-radius: 4px;
-  margin-top: 10px;
-  color: #fff;
-  font-size: 13px;
-  line-height: 1.4;
-  max-height: 150px;
-  overflow-y: auto;
-  white-space: pre-wrap;
+
+.viewer-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.viewer-loading-box {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  pointer-events: all;
+}
+
+.viewer-spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #ccc;
+  border-top: 5px solid #b22222;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.viewer-loading-box p {
+  margin: 0;
+  font-size: 1rem;
+  color: #555;
 }
