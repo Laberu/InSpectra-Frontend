@@ -9,6 +9,8 @@ export function AuthProvider({ children }) {
   const [accesstoken, setAccessToken] = useState(null);
   const [loading, setLoading] = useState(true); // NEW: loading state
 
+  const AUTH_BACKEND_API_URL = process.env.NEXT_PUBLIC_AUTH_BACKEND_API_URL; // Use environment variable
+
   useEffect(() => {
     const storedToken = localStorage.getItem("accesstoken");
     const storedUser = localStorage.getItem("user");
@@ -36,12 +38,21 @@ export function AuthProvider({ children }) {
     localStorage.setItem("accesstoken", token);
   };
 
-  const logout = () => {
+  const logout = async () => {
     setUser(null);
     setAccessToken(null);
     localStorage.removeItem("user");
     localStorage.removeItem("accesstoken");
+    try {
+      await fetch(`${AUTH_BACKEND_API_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
+  
 
   return (
     <AuthContext.Provider value={{ user, accesstoken, login, logout, loading }}>
