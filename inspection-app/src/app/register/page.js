@@ -73,6 +73,42 @@ export default function Register() {
     setShowTermsModal(false); // Close the modal
   };
 
+  // Handle social login (Google)
+  const handleSocialLogin = (platform) => {
+    if (platform === "Google") {
+      window.location.href = `${AUTH_BACKEND_API_URL}/auth/google`;
+    }
+  };
+  
+  // Inside the component
+  const { login } = useAuth();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`${AUTH_BACKEND_API_URL}/auth/get-user`, {
+          credentials: 'include', // Needed for cookies
+        });
+
+        if (!response.ok) throw new Error('User not authenticated');
+
+        const data = await response.json();
+        const userData = {
+          id: data.userid,
+          email: data.email,
+          // Add more fields if needed
+        };
+
+        login(userData, null); // Omit token if using cookies
+        router.push('/dashboard');
+      } catch (err) {
+        console.error('Error fetching user info:', err);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   return (
     <div className="register-body">
     <div className="register-container">
@@ -184,7 +220,7 @@ export default function Register() {
           <button
             className="google-button"
             aria-label="Sign up with Google"
-            onClick={() => alert("Google Sign-Up Clicked!")}
+            onClick={() => handleSocialLogin("Google")}
           >
             <img
               src="https://developers.google.com/identity/images/g-logo.png"
