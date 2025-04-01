@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // Import the router
 import "./register.css"; // Import your CSS
+import { useAuth } from "../../context/AuthContext";
+
 
 export default function Register() {
   const router = useRouter();
@@ -15,6 +17,7 @@ export default function Register() {
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
   const [error, setError] = useState(""); // Error state
+  
 
   const AUTH_BACKEND_API_URL = process.env.NEXT_PUBLIC_AUTH_BACKEND_API_URL; // Use environment variable
 
