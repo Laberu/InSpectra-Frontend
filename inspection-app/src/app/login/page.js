@@ -58,34 +58,34 @@ export default function Login() {
   };
 
   // Optional: Handle token after redirect from Google
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(`${AUTH_BACKEND_API_URL}/auth/get-user`, {
-          credentials: 'include', // 👈 Important to send cookies
-        });
-  
-        if (!response.ok) {
-          throw new Error('User not authenticated');
-        }
-  
-        const data = await response.json();
-  
-        const userData = {
-          id: data.userid,
-          email: data.email,
-          // Add more fields if needed
-        };
-  
-        login(userData, null); // You can omit token if it's in cookies
-        router.push('/dashboard');
-      } catch (err) {
-        console.error('Error fetching user info:', err);
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const response = await fetch(`${AUTH_BACKEND_API_URL}/auth/get-user`, {
+        credentials: 'include', // 👈 Important to send cookies
+      });
+
+      if (!response.ok) {
+        throw new Error('User not authenticated');
       }
-    };
-  
-    fetchUser();
-  }, []);
+
+      const data = await response.json();
+
+      const userData = {
+        id: data.userid,
+        email: data.email,
+        // Add more fields if needed
+      };
+
+      login(userData, null); // You can omit token if it's in cookies
+      router.push('/dashboard');
+    } catch (err) {
+      console.error('Error fetching user info:', err);
+    }
+  };
+
+  fetchUser();
+}, []);
 
   return (
     <div className="login-body">

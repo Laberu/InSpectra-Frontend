@@ -73,28 +73,41 @@ export default function Register() {
     setShowTermsModal(false); // Close the modal
   };
 
+  // Handle social login (Google)
   const handleSocialLogin = (platform) => {
     if (platform === "Google") {
       window.location.href = `${AUTH_BACKEND_API_URL}/auth/google`;
     }
   };
-
+  
+  // Inside the component
+  const { login } = useAuth();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
-    const email = urlParams.get("email");
-  
-    if (token && email) {
-      // Assuming you use some kind of auth context
-      const userData = { email };
-      // You might need to update this based on your actual AuthContext
-      // login(userData, token); 
-      router.push('/');
-    }
-  }, []);
-  
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`${AUTH_BACKEND_API_URL}/auth/get-user`, {
+          credentials: 'include', // Needed for cookies
+        });
 
+        if (!response.ok) throw new Error('User not authenticated');
+
+        const data = await response.json();
+        const userData = {
+          id: data.userid,
+          email: data.email,
+          // Add more fields if needed
+        };
+
+        login(userData, null); // Omit token if using cookies
+        router.push('/dashboard');
+      } catch (err) {
+        console.error('Error fetching user info:', err);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <div className="register-body">
