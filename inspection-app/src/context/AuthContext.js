@@ -39,10 +39,6 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    setUser(null);
-    setAccessToken(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("accesstoken");
     try {
       await fetch(`${AUTH_BACKEND_API_URL}/auth/logout`, {
         method: 'POST',
@@ -51,6 +47,10 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error("Logout failed:", error);
     }
+    setUser(null);
+    setAccessToken(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("accesstoken");
   };
   
 
