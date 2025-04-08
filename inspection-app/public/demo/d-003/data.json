@@ -1,0 +1,80 @@
+{
+    "modelUrl": "model.fbx",
+    "textureSets": {
+      "setA": {
+        "DAM.1001": "textures/setA/DAM.1001.jpg",
+        "DAM.1002": "textures/setA/DAM.1002.jpg"
+      },
+      "setB": {
+        "DAM.1001": "textures/setB/DAM.1001.jpg",
+        "DAM.1002": "textures/setB/DAM.1002.jpg"
+      }
+    },
+    "modelInfos": {
+      "modelInfo": {
+        "name": "Dam Phrae",
+        "vertices": 12000,
+        "faces": 6000
+      },
+      "positions": [
+        {
+          "name": "Position 1",
+          "position": { "x": 50, "y": 50, "z": 100 },
+          "rotationTarget": { "x": 0, "y": 0, "z": 0 },
+          "defect": {
+            "title": "Crack Detected",
+            "inspector": "Engineer A",
+            "position": "Top Left Beam",
+            "date": "2024-12-15",
+            "damageTypes": ["Crack"],
+            "accuracy": "92%",
+            "damageLevels": "Moderate",
+            "verified": true,
+            "location": "Beam B1",
+            "damageArea": "45cm²",
+            "damageDepth": "3.5mm",
+            "image": "img/defect1.jpg"
+          }
+        },
+        {
+          "name": "Position 2",
+          "position": { "x": 0, "y": 30, "z": 50 },
+          "rotationTarget": { "x": 10, "y": 10, "z": 10 },
+          "defect": {
+            "title": "Surface Erosion",
+            "inspector": "Engineer B",
+            "position": "Mid Wall Zone",
+            "date": "2025-01-10",
+            "damageTypes": ["Erosion", "Wear"],
+            "accuracy": "88%",
+            "damageLevels": "Low",
+            "verified": false,
+            "location": "Wall W2",
+            "damageArea": "20cm²",
+            "damageDepth": "1.2mm",
+            "image": "img/defect2.jpg"
+          }
+        },
+        {
+          "name": "Position 3",
+          "position": { "x": -40, "y": 20, "z": 30 },
+          "rotationTarget": { "x": 5, "y": 5, "z": 5 },
+          "defect": {
+            "title": "Structural Stress",
+            "inspector": "Engineer C",
+            "position": "Support Column Base",
+            "date": "2025-03-01",
+            "damageTypes": ["Stress"],
+            "accuracy": "95%",
+            "damageLevels": "High",
+            "verified": true,
+            "location": "Column C3",
+            "damageArea": "60cm²",
+            "damageDepth": "5mm",
+            "image": "img/defect3.jpg"
+          }
+        }
+      ]
+    }
+  }
+  

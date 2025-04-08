@@ -13,11 +13,6 @@ export default function DashboardPage() {
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [models, setModels] = useState([]);
 
-
-  const demoModels = [
-  ];
-  
-
   // Redirect to login if not logged in
   useEffect(() => {
     if (!loading && !user) {
@@ -56,9 +51,7 @@ export default function DashboardPage() {
     router.push(`/viewer/${modelId}`);
   };
 
-  const allModels = [...demoModels, ...models];
-
-  const filteredModels = allModels.filter((model) => {
+  const filteredModels = models.filter((model) => {
     if (filter === "all") return true;
     if (filter === "finished") return model.status === "finished" && !model.signed; 
     if (filter === "ongoing") return model.status === "Ongoing" || model.status === "processing";
@@ -89,7 +82,7 @@ export default function DashboardPage() {
       <Sidebar />
       <div className="dashboard-main">
         <div className="user-email-bar">
-          <span>Hello, {user?.email}</span>
+          <span>{user?.email}</span>
         </div>
 
         <h1 className="models-title">Projects</h1>
@@ -137,19 +130,16 @@ export default function DashboardPage() {
               >
               <div className="model-top">
                 <h3 className="model-title">{model.name}</h3>
-                {!model.job_id.startsWith('d-') && (
-                  <button
-                    className="delete-button"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent card click
-                      handleDelete(model.job_id);
-                    }}
-                    title="Delete project"
-                  >
-                    🗑️
-                  </button>
-                )}
-
+                <button
+                  className="delete-button"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent card click
+                    handleDelete(model.job_id);
+                  }}
+                  title="Delete project"
+                >
+                  🗑️
+                </button>
               </div>
 
                 <span

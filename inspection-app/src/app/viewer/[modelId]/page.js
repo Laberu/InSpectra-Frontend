@@ -15,7 +15,14 @@ export default function ViewerPage() {
   const [modelInfos, setModelInfos] = useState(null);
   const [extracted, setExtracted] = useState(false);
 
+  const isDemo = modelId.startsWith("d-");
+
   useEffect(() => {
+    if (isDemo) {
+      setExtracted(true); // No backend extraction
+      return;
+    }
+    
     const extractZipAndLoad = async () => {
       try {
         const formData = new FormData();
