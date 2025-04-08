@@ -453,10 +453,21 @@ const Viewer = ({ modelUrl, textureSets, modelInfos, modelId }) => {
 
         {/* Back button at bottom */}
         <div className="back-button-wrapper">
-          <button className="back-button" onClick={() => router.push('/demo')}>
+          <button
+            className="back-button"
+            onClick={() => {
+              const id = modelId; // Replace this with the actual ID you're using
+              if (id.startsWith("d-")) {
+                router.push('/demo');
+              } else {
+                router.push('/dashboard');
+              }
+            }}
+          >
             ← Dashboard
           </button>
         </div>
+
 
         <button
           className="back-button"
