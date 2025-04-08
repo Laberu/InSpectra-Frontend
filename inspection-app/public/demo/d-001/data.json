@@ -1,0 +1,123 @@
+{
+    "modelUrl": "model.fbx",
+    "textureSets": {
+    },
+    "modelInfos": {
+      "modelInfo": {
+        "name": "overallDOHFBX",
+        "vertices": 0,
+        "faces": 0
+      },
+      "positions": [
+        {
+          "name": "Position 1",
+          "position": {
+            "x": -135.37746,
+            "y": 13.28832,
+            "z": 1009.69926
+          },
+          "rotationTarget": {
+            "x": -100.58604,
+            "y": -17.90425,
+            "z": 1246.80043
+          },
+          "defect": {
+            "title": "รอยร้าว",
+            "inspector": "ดร. ภคพงศ์ ภัทราคม",
+            "position": "วิศวกรตรวจสอบ",
+            "date": "29/09/2567",
+            "damageTypes": ["รอยร้าวจากเหล็กเสริมเป็นสนิม"],
+            "accuracy": "92%",
+            "damageLevels": "ระดับ 3",
+            "verified": true,
+            "location": "-",
+            "damageArea": "-",
+            "damageDepth": "-",
+            "image": "img/03-rec.png"
+          }
+        },
+        {
+          "name": "Position 2",
+          "position": {
+              "x": 176.89662,
+              "y": 31.84107,
+              "z": 892.21385
+            },
+            "rotationTarget": {
+              "x": -510.90493,
+              "y": -213.18412,
+              "z": 852.94403
+            },
+          "defect": {
+            "title": "Surface Erosion",
+            "inspector": "Engineer B",
+            "position": "Mid Wall Zone",
+            "date": "2025-01-10",
+            "damageTypes": ["Erosion", "Wear"],
+            "accuracy": "88%",
+            "damageLevels": "Low",
+            "verified": false,
+            "location": "Wall W2",
+            "damageArea": "20cm²",
+            "damageDepth": "1.2mm",
+            "image": "img/01-rec.png"
+          }
+        },
+        {
+          "name": "Position 3",
+          "position": {
+            "x": -329.94844,
+            "y": 11.99615,
+            "z": 1252.42243
+          },
+          "rotationTarget": {
+            "x": -138.79801,
+            "y": -25.53106,
+            "z": 1323.01188
+          },
+          "defect": {
+            "title": "Structural Stress",
+            "inspector": "Engineer C",
+            "position": "Support Column Base",
+            "date": "2025-03-01",
+            "damageTypes": ["Stress"],
+            "accuracy": "95%",
+            "damageLevels": "High",
+            "verified": true,
+            "location": "Column C3",
+            "damageArea": "60cm²",
+            "damageDepth": "5mm",
+            "image": "img/02-rec.png"
+          }
+        },
+        {
+          "name": "Position 4",
+          "position": {
+            "x": -681.84203,
+            "y": 226.49216,
+            "z": 1540.37453
+          },
+          "rotationTarget": {
+            "x": -515.21243,
+            "y": 202.44204,
+            "z": 1713.74278
+          },
+          "defect": {
+            "title": "Structural Stress",
+            "inspector": "Engineer C",
+            "position": "Support Column Base",
+            "date": "2025-03-01",
+            "damageTypes": ["Stress"],
+            "accuracy": "95%",
+            "damageLevels": "High",
+            "verified": true,
+            "location": "Column C3",
+            "damageArea": "60cm²",
+            "damageDepth": "5mm",
+            "image": "img/Picture1-rec.png"
+          }
+        }
+      ]
+    }
+  }
+  

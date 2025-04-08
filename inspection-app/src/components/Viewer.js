@@ -442,7 +442,7 @@ const Viewer = ({ modelUrl, textureSets, modelInfos, modelId }) => {
 
         {/* Back button at bottom */}
         <div className="back-button-wrapper">
-          <button className="back-button" onClick={() => router.push('/dashboard')}>
+          <button className="back-button" onClick={() => router.push('/demo')}>
             ← Dashboard
           </button>
         </div>
@@ -482,7 +482,10 @@ const Viewer = ({ modelUrl, textureSets, modelInfos, modelId }) => {
           style={{ marginTop: '8px' }}
           onClick={() => {
             const a = document.createElement('a');
-            a.href = `/api/models/${modelId}/download-fbx`;
+            a.href = modelId.startsWith("d-")
+                ? `/demo/${modelId}/model.fbx`
+                : `/api/models/${modelId}/download-fbx`;
+
             a.download = `${modelInfo.name || modelId}.fbx`; // Use name if available
             a.click();
           }}
@@ -501,8 +504,12 @@ const Viewer = ({ modelUrl, textureSets, modelInfos, modelId }) => {
         {/* Top Image Section */}
         <div className="info-panel__image">
         <img
-            src={`/api/models/${modelId
-}/texture?file=${encodeURIComponent(selectedPosition.defect.image)}`}
+        src={
+          modelId.startsWith("d-")
+            ? `/demo/${modelId}/${selectedPosition.defect.image}`
+            : `/api/models/${modelId}/texture?file=${encodeURIComponent(selectedPosition.defect.image)}`
+}
+
             alt={selectedPosition.defect.title || 'Defect Image'}
           />
           <button className="info-panel__close" onClick={closeInfoPanel}>✖</button>

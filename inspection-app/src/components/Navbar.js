@@ -31,7 +31,7 @@ export default function Navbar() {
         {/* Desktop Nav Links */}
         <ul className="navbar-links">
         <li><a href="#hero">Home</a></li>
-          <li><a href="#partners">Partners</a></li>
+          {/* <li><a href="#partners">Partners</a></li> */}
           <li><a href="#features">Features</a></li>
           <li><a href="#usecases">Use Cases</a></li>
           <li><a href="#footer">Contact Us</a></li>
@@ -39,12 +39,13 @@ export default function Navbar() {
 
         {/* Desktop CTA Button */}
         <div className="navbar-cta">
-          <button
-            className="navbar-demo-btn"
-            onClick={() => router.push("/login")}
-          >
-            Sign In
-          </button>
+          <a href="#demo">
+            <button
+              className="navbar-demo-btn"
+            >
+              Demo
+            </button>
+          </a>
         </div>
 
         {/* Hamburger Icon (mobile only) */}
