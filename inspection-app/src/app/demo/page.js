@@ -13,25 +13,29 @@ export default function LandingDemoPage() {
     <>
       <Navbar />
       <div id="hero" className="hero-section">
-        <div className="hero-content">
-          <h1>Elevate Asset Management with AI-Powered Inspections</h1>
-          <p>
-            InSpectra’s cloud-based inspection portal ties building owners and
-            engineers closer with accurate, real-time data and insights that
-            identify critical areas of concern. With AI Defect Detection
-            capabilities, you can streamline reporting, reduce exterior damage
-            faster, and see more accurately than traditional methods.
-          </p>
-          <a href="#demo">
-            <button className="hero-cta">
-              Demo
-            </button>
-          </a>
+        <div className="hero-text-section">
+          <div className="hero-content">
+            <h1>Elevate Asset Management with AI-Powered Inspections</h1>
+            <p>
+              InSpectra’s cloud-based inspection portal ties building owners and
+              engineers closer with accurate, real-time data and insights that
+              identify critical areas of concern. With AI Defect Detection
+              capabilities, you can streamline reporting, reduce exterior damage
+              faster, and see more accurately than traditional methods.
+            </p>
+            <a href="#demo">
+              <button className="hero-cta">Demo</button>
+            </a>
+          </div>
         </div>
-        <div className="hero-image-container">
-          <img src="/bridge.png" alt="Bridge" className="hero-image" />
+        <div className="hero-image-section">
+          <div className="hero-image-container">
+            <img src="/bridge.png" alt="Bridge" className="hero-image" />
+          </div>
         </div>
       </div>
+
+
       <div id="features" className="features-section">
         <div className="features-content">
           <h2>Powerful AI inspection</h2>

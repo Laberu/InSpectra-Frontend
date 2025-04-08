@@ -13,7 +13,7 @@ export default function Sidebar() {
       // Clear authentication state
       logout();
       // Redirect to login page
-      router.push("/landing");
+      router.push("/demo");
     } catch (error) {
       console.error("Logout failed:", error);
     }

@@ -39,13 +39,12 @@ export default function Navbar() {
 
         {/* Desktop CTA Button */}
         <div className="navbar-cta">
-          <a href="#demo">
-            <button
-              className="navbar-demo-btn"
-            >
-              Demo
-            </button>
-          </a>
+          <button
+            className="navbar-demo-btn"
+            onClick={() => router.push("/login")}
+          >
+            Sign In
+          </button>
         </div>
 
         {/* Hamburger Icon (mobile only) */}

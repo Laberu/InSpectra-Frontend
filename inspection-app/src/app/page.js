@@ -9,8 +9,7 @@ export default function HomeRedirect() {
 
   useEffect(() => {
     if (user) {
-      // router.replace("/dashboard");
-      router.replace("/demo");
+      router.replace("/dashboard");
     } else {
       // router.replace("/landing");
       router.replace("/demo");

@@ -79,27 +79,38 @@ const Viewer = ({ modelUrl, textureSets, modelInfos, modelId }) => {
   };
 
   // Move camera with gsap
-  const moveCameraToPosition = (index) => {
-    const selected = positions[index];
-    if (!selected || !cameraRef.current || !controlsRef.current) return;
-
-    const { position, rotationTarget } = selected;
-    gsap.to(cameraRef.current.position, {
-      x: position.x,
-      y: position.y,
-      z: position.z,
-      duration: 1.5,
-      ease: 'power2.inOut',
-      onUpdate: () => {
-        cameraRef.current.lookAt(rotationTarget.x, rotationTarget.y, rotationTarget.z);
-      },
-      onComplete: () => {
-        controlsRef.current.target.set(rotationTarget.x, rotationTarget.y, rotationTarget.z);
-        controlsRef.current.update();
-        setSelectedPosition(selected);
-      },
-    });
-  };
+    const moveCameraToPosition = (index) => {
+      const selected = positions[index];
+      if (!selected || !cameraRef.current || !controlsRef.current) return;
+    
+      const { position, rotationTarget } = selected;
+    
+      gsap.to(cameraRef.current.position, {
+        x: position.x,
+        y: position.y,
+        z: position.z,
+        duration: 1.5,
+        ease: 'power2.inOut',
+        onUpdate: () => {
+          controlsRef.current.update(); // Keep updating during animation
+        },
+        onComplete: () => {
+          setSelectedPosition(selected);
+        },
+      });
+    
+      gsap.to(controlsRef.current.target, {
+        x: rotationTarget.x,
+        y: rotationTarget.y,
+        z: rotationTarget.z,
+        duration: 1.5,
+        ease: 'power2.inOut',
+        onUpdate: () => {
+          controlsRef.current.update(); // Update controls with new target
+        },
+      });
+    };
+  
 
   // Init scene
   useEffect(() => {
@@ -449,21 +460,21 @@ const Viewer = ({ modelUrl, textureSets, modelInfos, modelId }) => {
 
         <button
           className="back-button"
-          style={{ marginTop: '8px' }}
+          style={{ marginTop: '8px', cursor: modelId.startsWith('d-') ? 'not-allowed' : 'pointer' }}
+          disabled={modelId.startsWith('d-')}
+          title={modelId.startsWith('d-') ? "Download disabled for demo models." : ""}
           onClick={async () => {
+            if (modelId.startsWith("d-")) return;
             try {
               const res = await fetch(`/api/models/${modelId}/generate-report`, {
                 method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ modelInfos }),
               });
 
               if (res.ok) {
-                const downloadUrl = `/api/models/${modelId}/download-report`;
                 const a = document.createElement('a');
-                a.href = downloadUrl;
+                a.href = `/api/models/${modelId}/download-report`;
                 a.download = `report-${modelId}.pdf`;
                 a.click();
               } else {
@@ -477,21 +488,23 @@ const Viewer = ({ modelUrl, textureSets, modelInfos, modelId }) => {
           📄 Download Report
         </button>
 
+
         <button
           className="back-button"
-          style={{ marginTop: '8px' }}
+          style={{ marginTop: '8px', cursor: modelId.startsWith('d-') ? 'not-allowed' : 'pointer' }}
+          disabled={modelId.startsWith('d-')}
+          title={modelId.startsWith('d-') ? "Download disabled for demo models." : ""}
           onClick={() => {
+            if (modelId.startsWith("d-")) return;
             const a = document.createElement('a');
-            a.href = modelId.startsWith("d-")
-                ? `/demo/${modelId}/model.fbx`
-                : `/api/models/${modelId}/download-fbx`;
-
-            a.download = `${modelInfo.name || modelId}.fbx`; // Use name if available
+            a.href = `/api/models/${modelId}/download-fbx`;
+            a.download = `${modelInfo.name || modelId}.fbx`;
             a.click();
           }}
         >
           📦 Download Model (.fbx)
         </button>
+
 
       </div>
 
